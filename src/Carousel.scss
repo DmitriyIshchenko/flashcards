@@ -1,0 +1,48 @@
+.carousel {
+  overflow: hidden;
+
+  &__content {
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    // temp
+    background-color: orangered;
+    height: 40rem;
+    font-size: 5rem;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    justify-content: center;
+  }
+
+  &__btn {
+    z-index: 10;
+    transition: all 0.3s;
+
+    border: none;
+    border-radius: 100rem;
+    width: 3rem;
+    aspect-ratio: 1;
+
+    background-color: #000;
+    cursor: pointer;
+
+    color: #fff;
+
+    &:hover,
+    &:active {
+      background-color: lighten(#000, 10%);
+    }
+  }
+}
