@@ -6,12 +6,15 @@ export default function Carousel({ children }) {
   const [inProp, setInProp] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("");
+  const [isControlsDisabled, setIsControlsDisabled] = useState(false);
+
   const nodeRef = useRef(null);
 
   function handleMove(e) {
     const { direction } = e.target.dataset;
     setInProp((v) => !v);
     setDirection(direction);
+    setIsControlsDisabled(true);
   }
 
   function handleUpdateIndex() {
@@ -26,6 +29,7 @@ export default function Carousel({ children }) {
         index === children.length - 1 ? 0 : index + 1
       );
     }
+    setIsControlsDisabled(false);
   }
 
   return (
@@ -60,6 +64,7 @@ export default function Carousel({ children }) {
       <button
         className="carousel__btn carousel__btn--left"
         data-direction="left"
+        disabled={isControlsDisabled}
         onClick={handleMove}
       >
         &larr;
@@ -67,6 +72,7 @@ export default function Carousel({ children }) {
       <button
         className="carousel__btn carousel__btn--right"
         data-direction="right"
+        disabled={isControlsDisabled}
         onClick={handleMove}
       >
         &rarr;
