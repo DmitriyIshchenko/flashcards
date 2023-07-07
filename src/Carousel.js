@@ -1,45 +1,76 @@
-import { useState } from "react";
 import "./Carousel.scss";
+import { useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 
 export default function Carousel({ children }) {
+  const [inProp, setInProp] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState("");
+  const nodeRef = useRef(null);
 
-  function handleClick(newIndex) {
-    if (newIndex < 0) newIndex = children.length - 1;
-    if (newIndex > children.length - 1) newIndex = 0;
+  function handleMove(e) {
+    const { direction } = e.target.dataset;
+    setInProp((v) => !v);
+    setDirection(direction);
+  }
 
-    setCurrentIndex(newIndex);
+  function handleUpdateIndex() {
+    if (direction === "left") {
+      setCurrentIndex((index) =>
+        index === 0 ? children.length - 1 : index - 1
+      );
+    }
+
+    if (direction === "right") {
+      setCurrentIndex((index) =>
+        index === children.length - 1 ? 0 : index + 1
+      );
+    }
   }
 
   return (
     <div className="carousel">
-      <div
-        className="carousel__content"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      <button
+        className="carousel__btn"
+        data-direction="left"
+        onClick={handleMove}
       >
-        {Array.from(children).map((child, i) => (
-          <CarouselItem key={i}>{child}</CarouselItem>
-        ))}
+        &larr;
+      </button>
+
+      <div className="carousel__inner">
+        <CSSTransition
+          nodeRef={nodeRef}
+          in={inProp}
+          timeout={300}
+          classNames={`move-${direction}`}
+          onEntered={handleUpdateIndex}
+          onExited={handleUpdateIndex}
+        >
+          <div className="carousel__content" ref={nodeRef}>
+            <div className="carousel__item carousel__item--left">
+              {children.at(currentIndex - 1)}
+            </div>
+            <div className="carousel__item carousel__item--center">
+              {children.at(currentIndex)}
+            </div>
+            <div className="carousel__item carousel__item--right">
+              {children.at(currentIndex + 1) || children.at(0)}
+            </div>
+          </div>
+        </CSSTransition>
+        <span className="carousel__info">
+          {currentIndex + 1} / {children.length}
+        </span>
       </div>
 
-      <div className="carousel__controls">
-        <button
-          className="carousel__btn"
-          onClick={() => handleClick(currentIndex - 1)}
-        >
-          &larr;
-        </button>
-        <button
-          className="carousel__btn"
-          onClick={() => handleClick(currentIndex + 1)}
-        >
-          &rarr;
-        </button>
-      </div>
+      <button
+        className="carousel__btn"
+        data-direction="right"
+        onClick={handleMove}
+      >
+        &rarr;
+      </button>
     </div>
   );
-}
-
-function CarouselItem({ children }) {
-  return <div className="carousel__item">{children}</div>;
 }
