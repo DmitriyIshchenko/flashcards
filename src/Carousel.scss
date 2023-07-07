@@ -1,48 +1,110 @@
+:root {
+  --carousel-width: 50rem;
+  --item-gap: 3rem;
+
+  --item-width: calc(var(--carousel-width) - 2 * var(--item-gap));
+}
+
 .carousel {
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__inner {
+    position: relative;
+
+    display: grid;
+    gap: 2rem;
+
+    width: var(--carousel-width);
+    overflow: hidden;
+  }
+
+  &__info {
+    justify-self: center;
+    font-size: 1.6rem;
+  }
 
   &__content {
-    transition: all 0.3s;
-    white-space: nowrap;
+    position: relative;
+    left: calc(-1 * var(--carousel-width) - 2 * var(--item-gap));
+
+    display: flex;
+    gap: var(--item-gap);
   }
 
   &__item {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    flex: 0 0 var(--item-width);
 
-    width: 100%;
+    // TEMP STYLES
+    height: 20rem;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 1rem;
+    // END TEMP STYLES
 
-    // temp
-    background-color: orangered;
-    height: 40rem;
-    font-size: 5rem;
-  }
+    font-size: 3rem;
 
-  &__controls {
-    display: flex;
-    gap: 2rem;
-    margin-top: 3rem;
-    justify-content: center;
+    // hide shadows
+    &--left,
+    &--right {
+      opacity: 0;
+    }
   }
 
   &__btn {
-    z-index: 10;
+    // center buttons relative to the content
+    transform: translateY(-2rem);
+
     transition: all 0.3s;
 
+    height: 2.5rem;
+    aspect-ratio: 1;
     border: none;
     border-radius: 100rem;
-    width: 3rem;
-    aspect-ratio: 1;
 
     background-color: #000;
-    cursor: pointer;
-
     color: #fff;
+
+    cursor: pointer;
 
     &:hover,
     &:active {
-      background-color: lighten(#000, 10%);
+      background-color: lighten(#000, 15%);
     }
+  }
+}
+
+// ===== ANIMATIONS =====
+
+.move-left-enter,
+.move-left-enter-done,
+.move-left-exit,
+.move-left-exit-done,
+.move-right-enter,
+.move-right-enter-done,
+.move-right-exit,
+.move-right-exit-done {
+  left: calc(-1 * var(--item-width));
+}
+
+.move-left-enter-active,
+.move-left-exit-active {
+  transition: all 0.3s;
+  left: var(--item-gap);
+
+  .carousel__item--left {
+    opacity: 1;
+  }
+}
+
+.move-right-enter-active,
+.move-right-exit-active {
+  transition: all 0.3s;
+  left: calc(-2 * var(--item-width) - var(--item-gap));
+
+  .carousel__item--right {
+    opacity: 1;
   }
 }
