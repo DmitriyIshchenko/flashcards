@@ -1,0 +1,40 @@
+.flashcard {
+  display: grid;
+  place-items: center;
+  position: relative;
+
+  height: 40rem;
+  padding: 3rem;
+  width: var(--item-width);
+
+  margin: 0 auto;
+  padding-top: 2rem;
+
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+
+  &__title {
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+    font-size: 2rem;
+    color: #aaa;
+  }
+
+  &__content {
+    font-weight: 500;
+
+    &--term {
+      font-size: 3rem;
+    }
+
+    &--description {
+      font-size: 2rem;
+    }
+  }
+
+  &__hint {
+    position: absolute;
+    bottom: 2rem;
+  }
+}
