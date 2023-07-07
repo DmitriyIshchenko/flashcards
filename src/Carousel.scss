@@ -1,16 +1,19 @@
 :root {
-  --carousel-width: 50rem;
+  --carousel-width: 64rem;
   --item-gap: 3rem;
 
   --item-width: calc(var(--carousel-width) - 2 * var(--item-gap));
 }
 
 .carousel {
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
+  justify-items: center;
 
   &__inner {
+    grid-column: 2 / 3;
+
     position: relative;
 
     display: grid;
@@ -18,16 +21,17 @@
 
     width: var(--carousel-width);
     overflow: hidden;
+    padding-block: 2rem;
   }
 
   &__info {
-    justify-self: center;
+    grid-column: 2 / 3;
     font-size: 1.6rem;
   }
 
   &__content {
     position: relative;
-    left: calc(-1 * var(--carousel-width) - 2 * var(--item-gap));
+    left: calc(-1 * var(--item-width));
 
     display: flex;
     gap: var(--item-gap);
@@ -35,16 +39,6 @@
 
   &__item {
     flex: 0 0 var(--item-width);
-
-    // TEMP STYLES
-    height: 20rem;
-    display: grid;
-    place-items: center;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 1rem;
-    // END TEMP STYLES
-
-    font-size: 3rem;
 
     // hide shadows
     &--left,
@@ -59,19 +53,30 @@
 
     transition: all 0.3s;
 
-    height: 2.5rem;
+    height: 3.6rem;
     aspect-ratio: 1;
     border: none;
     border-radius: 100rem;
 
     background-color: #000;
     color: #fff;
+    font-size: 3rem;
 
     cursor: pointer;
 
     &:hover,
     &:active {
-      background-color: lighten(#000, 15%);
+      background-color: lighten(#000, 25%);
+    }
+
+    &--left {
+      grid-column: 1/2;
+      grid-row: 1/2;
+    }
+
+    &--right {
+      grid-column: 3/4;
+      grid-row: 1/2;
     }
   }
 }

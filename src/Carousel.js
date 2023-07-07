@@ -30,14 +30,6 @@ export default function Carousel({ children }) {
 
   return (
     <div className="carousel">
-      <button
-        className="carousel__btn"
-        data-direction="left"
-        onClick={handleMove}
-      >
-        &larr;
-      </button>
-
       <div className="carousel__inner">
         <CSSTransition
           nodeRef={nodeRef}
@@ -59,13 +51,21 @@ export default function Carousel({ children }) {
             </div>
           </div>
         </CSSTransition>
-        <span className="carousel__info">
-          {currentIndex + 1} / {children.length}
-        </span>
       </div>
 
+      <span className="carousel__info">
+        {currentIndex + 1} / {children.length}
+      </span>
+
       <button
-        className="carousel__btn"
+        className="carousel__btn carousel__btn--left"
+        data-direction="left"
+        onClick={handleMove}
+      >
+        &larr;
+      </button>
+      <button
+        className="carousel__btn carousel__btn--right"
         data-direction="right"
         onClick={handleMove}
       >
