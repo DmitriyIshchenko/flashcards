@@ -43,6 +43,10 @@
     &:active {
       background-color: lighten(tomato, 10%);
     }
+
+    &:disabled {
+      background-color: #ccc;
+    }
   }
 
   &__content {

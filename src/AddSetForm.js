@@ -52,6 +52,7 @@ export default function AddSetForm() {
           field={field}
           onFieldChange={handleFieldChange}
           onDeleteField={handleDeleteField}
+          isOnlyItem={inputFields.length === 1}
         />
       ))}
 
@@ -62,7 +63,7 @@ export default function AddSetForm() {
   );
 }
 
-function TermInput({ index, field, onFieldChange, onDeleteField }) {
+function TermInput({ index, field, onFieldChange, onDeleteField, isOnlyItem }) {
   const textAreaRef = useRef(null);
   const { term, description } = field;
   const handleChange = (e) => {
@@ -84,6 +85,7 @@ function TermInput({ index, field, onFieldChange, onDeleteField }) {
           type="button"
           className="word__delete-btn"
           onClick={() => onDeleteField(index)}
+          disabled={isOnlyItem}
         >
           &times;
         </button>
