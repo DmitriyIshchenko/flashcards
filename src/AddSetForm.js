@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./AddSetForm.scss";
-import { useRef } from "react";
 
 export default function AddSetForm() {
   const [inputFields, setInputFields] = useState([
     { term: "milk", description: "" },
   ]);
 
-  function handleFormChange(index, e) {
+  function handleFieldChange(index, e) {
     const data = [...inputFields];
 
     data[index][e.target.name] = e.target.value;
@@ -21,6 +20,12 @@ export default function AddSetForm() {
     setInputFields((currentFields) => [...currentFields, newField]);
   }
 
+  function handleDeleteField(index) {
+    const data = [...inputFields];
+    data.splice(index, 1);
+    setInputFields(data);
+  }
+
   return (
     <form className="form">
       {inputFields.map((field, index) => (
@@ -28,7 +33,8 @@ export default function AddSetForm() {
           key={index}
           index={index}
           field={field}
-          onFormChange={handleFormChange}
+          onFieldChange={handleFieldChange}
+          onDeleteField={handleDeleteField}
         />
       ))}
 
@@ -39,11 +45,11 @@ export default function AddSetForm() {
   );
 }
 
-function TermInput({ index, field, onFormChange }) {
+function TermInput({ index, field, onFieldChange, onDeleteField }) {
   const textAreaRef = useRef(null);
   const { term, description } = field;
   const handleChange = (e) => {
-    onFormChange(index, e);
+    onFieldChange(index, e);
 
     if (e.target.name !== "description") return;
 
@@ -57,7 +63,11 @@ function TermInput({ index, field, onFormChange }) {
     <div className="word">
       <header className="word__header">
         <span className="word__number">{index + 1}</span>
-        <button type="button" className="word__delete-btn">
+        <button
+          type="button"
+          className="word__delete-btn"
+          onClick={() => onDeleteField(index)}
+        >
           &times;
         </button>
       </header>
