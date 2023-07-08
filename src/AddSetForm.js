@@ -15,8 +15,14 @@ export default function AddSetForm() {
     setInputFields(data);
   }
 
+  function handleAddField() {
+    const newField = { term: "", description: "" };
+
+    setInputFields((currentFields) => [...currentFields, newField]);
+  }
+
   return (
-    <form>
+    <form className="form">
       {inputFields.map((field, index) => (
         <TermInput
           key={index}
@@ -25,6 +31,10 @@ export default function AddSetForm() {
           onFormChange={handleFormChange}
         />
       ))}
+
+      <button className="form__add-btn" type="button" onClick={handleAddField}>
+        +
+      </button>
     </form>
   );
 }
