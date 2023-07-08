@@ -13,7 +13,7 @@ function usePrevious(value) {
 
 export default function AddSetForm() {
   const [inputFields, setInputFields] = useState([
-    { term: "milk", description: "" },
+    { term: "", description: "", id: crypto.randomUUID() },
   ]);
   const prevInputFields = usePrevious(inputFields);
 
@@ -26,7 +26,7 @@ export default function AddSetForm() {
   }
 
   function handleAddField() {
-    const newField = { term: "", description: "" };
+    const newField = { term: "", description: "", id: crypto.randomUUID() };
 
     setInputFields((currentFields) => [...currentFields, newField]);
   }
@@ -47,7 +47,7 @@ export default function AddSetForm() {
     <form className="form">
       {inputFields.map((field, index) => (
         <TermInput
-          key={index}
+          key={field.id}
           index={index}
           field={field}
           onFieldChange={handleFieldChange}
