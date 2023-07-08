@@ -3,21 +3,39 @@ import "./AddSetForm.scss";
 import { useRef } from "react";
 
 export default function AddSetForm() {
+  const [inputFields, setInputFields] = useState([
+    { term: "milk", description: "" },
+  ]);
+
+  function handleFormChange(index, e) {
+    const data = [...inputFields];
+
+    data[index][e.target.name] = e.target.value;
+
+    setInputFields(data);
+  }
+
   return (
     <form>
-      {Array.from({ length: 5 }).map((item, index) => (
-        <TermInput number={index + 1} key={index + 1} />
+      {inputFields.map((field, index) => (
+        <TermInput
+          key={index}
+          index={index}
+          field={field}
+          onFormChange={handleFormChange}
+        />
       ))}
     </form>
   );
 }
 
-function TermInput({ number }) {
+function TermInput({ index, field, onFormChange }) {
   const textAreaRef = useRef(null);
-  const [description, setDescription] = useState("");
-
+  const { term, description } = field;
   const handleChange = (e) => {
-    setDescription(e.target.value);
+    onFormChange(index, e);
+
+    if (e.target.name !== "description") return;
 
     // auto grow textarea
     textAreaRef.current.style.height = "auto";
@@ -28,7 +46,7 @@ function TermInput({ number }) {
   return (
     <div className="word">
       <header className="word__header">
-        <span className="word__number">{number}</span>
+        <span className="word__number">{index + 1}</span>
         <button type="button" className="word__delete-btn">
           &times;
         </button>
@@ -37,14 +55,16 @@ function TermInput({ number }) {
       <div className="word__content">
         <input
           className="word__input word__input--term"
+          name="term"
           type="text"
           placeholder="Term"
+          value={term}
+          onChange={handleChange}
         />
 
         <textarea
           className="word__input word__input--description"
-          name=""
-          id=""
+          name="description"
           rows={1}
           ref={textAreaRef}
           placeholder="Description"
