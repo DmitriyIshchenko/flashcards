@@ -1,10 +1,21 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./AddSetForm.scss";
+
+function usePrevious(value) {
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  return ref.current;
+}
 
 export default function AddSetForm() {
   const [inputFields, setInputFields] = useState([
     { term: "milk", description: "" },
   ]);
+  const prevInputFields = usePrevious(inputFields);
 
   function handleFieldChange(index, e) {
     const data = [...inputFields];
@@ -25,6 +36,12 @@ export default function AddSetForm() {
     data.splice(index, 1);
     setInputFields(data);
   }
+
+  useEffect(() => {
+    if (inputFields.length <= prevInputFields?.length) return;
+
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [inputFields, prevInputFields]);
 
   return (
     <form className="form">
