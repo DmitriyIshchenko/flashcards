@@ -12,6 +12,8 @@ function usePrevious(value) {
 }
 
 export default function AddSetForm() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [inputFields, setInputFields] = useState([
     { term: "", description: "", id: crypto.randomUUID() },
   ]);
@@ -45,6 +47,32 @@ export default function AddSetForm() {
 
   return (
     <form className="form">
+      <header className="form__header">
+        <label htmlFor="title" className="form__label">
+          Title
+          <input
+            type="text"
+            id="title"
+            className="form__input"
+            placeholder="Enter a title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </label>
+
+        <label htmlFor="description" className="form__label">
+          Description
+          <input
+            type="text"
+            id="description"
+            className="form__input"
+            placeholder="Complete a description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+      </header>
+
       {inputFields.map((field, index) => (
         <TermInput
           key={field.id}
@@ -55,7 +83,6 @@ export default function AddSetForm() {
           isOnlyItem={inputFields.length === 1}
         />
       ))}
-
       <button className="form__add-btn" type="button" onClick={handleAddField}>
         +
       </button>

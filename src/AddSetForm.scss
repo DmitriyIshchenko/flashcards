@@ -32,7 +32,7 @@
 
     width: 4rem;
     aspect-ratio: 1;
-    background-color: tomato;
+    background-color: var(--clr-red);
 
     font-size: 3rem;
 
@@ -41,7 +41,7 @@
 
     &:hover,
     &:active {
-      background-color: lighten(tomato, 10%);
+      background-color: var(--clr-red-lighter);
     }
 
     &:disabled {
@@ -64,9 +64,15 @@
     border: none;
     border-bottom: 0.3rem solid #000;
 
+    transition: all 0.2s;
+
     font-family: inherit;
     font-size: 1.6rem;
     font-weight: 600;
+
+    &:focus {
+      border-color: var(--clr-accent);
+    }
   }
 
   &__input--description {
@@ -76,6 +82,44 @@
 }
 
 .form {
+  margin-top: 1rem;
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+    width: 80%;
+
+    margin: 0 auto;
+  }
+
+  &__label {
+    width: 100%;
+    display: grid;
+    gap: 1rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+
+  &__input {
+    width: 100%;
+
+    padding: 1rem 1.5rem;
+    border-radius: 100rem;
+    border: 2px solid #000;
+
+    background: transparent;
+    transition: all 0.2s;
+
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1.6rem;
+    &:focus {
+      border-color: #50d2c2;
+      outline: none;
+    }
+  }
+
   &__add-btn {
     position: fixed;
     bottom: 3rem;
