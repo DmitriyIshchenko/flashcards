@@ -11,13 +11,19 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default function AddSetForm() {
+export default function AddSetForm({ onSaveSet }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [inputFields, setInputFields] = useState([
     { term: "", description: "", id: crypto.randomUUID() },
   ]);
   const prevInputFields = usePrevious(inputFields);
+
+  const canSave = !!(
+    title &&
+    description &&
+    Object.values(inputFields[0]).every((value) => value)
+  );
 
   function handleFieldChange(index, e) {
     const data = [...inputFields];
@@ -39,6 +45,19 @@ export default function AddSetForm() {
     setInputFields(data);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const newSet = {
+      id: crypto.randomUUID(),
+      title,
+      description,
+      terms: inputFields,
+    };
+
+    onSaveSet(newSet);
+  }
+
   useEffect(() => {
     if (inputFields.length <= prevInputFields?.length) return;
 
@@ -46,43 +65,68 @@ export default function AddSetForm() {
   }, [inputFields, prevInputFields]);
 
   return (
-    <form className="form">
+    <form className="form" onSubmit={handleSubmit}>
       <header className="form__header">
-        <label htmlFor="title" className="form__label">
-          Title
-          <input
-            type="text"
-            id="title"
-            className="form__input"
-            placeholder="Enter a title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
+        <div className="form__controls">
+          <h2 className="form__title">Create a flashcard set</h2>
+          <button
+            type="submit"
+            className="form__submit-btn form__submit-btn--top"
+            disabled={!canSave}
+          >
+            Create
+          </button>
+        </div>
 
-        <label htmlFor="description" className="form__label">
-          Description
-          <input
-            type="text"
-            id="description"
-            className="form__input"
-            placeholder="Complete a description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
+        <div className="form__info">
+          <label htmlFor="title" className="form__label">
+            Title
+            <input
+              type="text"
+              id="title"
+              className="form__input"
+              placeholder="Enter a title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </label>
+
+          <label htmlFor="description" className="form__label">
+            Description
+            <input
+              type="text"
+              id="description"
+              className="form__input"
+              placeholder="Complete a description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </label>
+        </div>
       </header>
 
-      {inputFields.map((field, index) => (
-        <TermInput
-          key={field.id}
-          index={index}
-          field={field}
-          onFieldChange={handleFieldChange}
-          onDeleteField={handleDeleteField}
-          isOnlyItem={inputFields.length === 1}
-        />
-      ))}
+      <fieldset className="form__set">
+        {inputFields.map((field, index) => (
+          <TermInput
+            key={field.id}
+            index={index}
+            field={field}
+            onFieldChange={handleFieldChange}
+            onDeleteField={handleDeleteField}
+            isOnlyItem={inputFields.length === 1}
+          />
+        ))}
+      </fieldset>
+
+      <button
+        type="submit"
+        className="form__submit-btn form__submit-btn--bottom"
+        disabled={!canSave}
+      >
+        Create
+      </button>
       <button className="form__add-btn" type="button" onClick={handleAddField}>
         +
       </button>
@@ -126,6 +170,7 @@ function TermInput({ index, field, onFieldChange, onDeleteField, isOnlyItem }) {
           placeholder="Term"
           value={term}
           onChange={handleChange}
+          required
         />
 
         <textarea
@@ -136,6 +181,7 @@ function TermInput({ index, field, onFieldChange, onDeleteField, isOnlyItem }) {
           placeholder="Description"
           value={description}
           onChange={handleChange}
+          required
         ></textarea>
       </div>
     </div>
