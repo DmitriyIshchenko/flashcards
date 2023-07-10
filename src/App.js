@@ -65,20 +65,21 @@ export default function App() {
     setIsFlipped((v) => !v);
   }
 
-  function handleSaveSet(newSet) {
-    const { id } = newSet;
+  function handleSaveDeck(newDeck) {
+    const { id } = newDeck;
     const updatedDecks = [...decks];
 
     const index = updatedDecks.findIndex((deck) => deck.id === id);
-    if (index === -1) setDecks((currentDecks) => [...currentDecks, newSet]);
+    if (index === -1)
+      return setDecks((currentDecks) => [...currentDecks, newDeck]);
 
-    updatedDecks[index] = newSet;
+    updatedDecks[index] = newDeck;
     setDecks(updatedDecks);
   }
 
   return (
     <div className="App">
-      <AddSetForm onSaveSet={handleSaveSet} />
+      <AddSetForm onSaveDeck={handleSaveDeck} />
       {/* <Carousel>
         {decks[0].terms.map((item) => (
           <FlashCard
