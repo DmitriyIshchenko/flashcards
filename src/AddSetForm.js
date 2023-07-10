@@ -11,12 +11,18 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default function AddSetForm({ onSaveSet }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [inputFields, setInputFields] = useState([
-    { term: "", description: "", id: crypto.randomUUID() },
-  ]);
+export default function AddSetForm({ onSaveSet, setToEdit }) {
+  const [title, setTitle] = useState(() => setToEdit?.title || "");
+  const [description, setDescription] = useState(
+    () => setToEdit?.description || ""
+  );
+  const [inputFields, setInputFields] = useState(() => {
+    return (
+      setToEdit?.terms || [
+        { term: "", description: "", id: crypto.randomUUID() },
+      ]
+    );
+  });
   const prevInputFields = usePrevious(inputFields);
 
   const canSave = !!(
@@ -49,7 +55,7 @@ export default function AddSetForm({ onSaveSet }) {
     e.preventDefault();
 
     const newSet = {
-      id: crypto.randomUUID(),
+      id: setToEdit?.id || crypto.randomUUID(),
       title,
       description,
       terms: inputFields,
@@ -68,13 +74,16 @@ export default function AddSetForm({ onSaveSet }) {
     <form className="form" onSubmit={handleSubmit}>
       <header className="form__header">
         <div className="form__controls">
-          <h2 className="form__title">Create a flashcard set</h2>
+          {setToEdit && <button className="form__back-btn">&larr;</button>}
+          <h2 className="form__title">
+            {setToEdit ? "Back to set" : "Create a flashcard set"}
+          </h2>
           <button
             type="submit"
             className="form__submit-btn form__submit-btn--top"
             disabled={!canSave}
           >
-            Create
+            {setToEdit ? "Save" : "Create"}
           </button>
         </div>
 
@@ -125,7 +134,7 @@ export default function AddSetForm({ onSaveSet }) {
         className="form__submit-btn form__submit-btn--bottom"
         disabled={!canSave}
       >
-        Create
+        {setToEdit ? "Save" : "Create"}
       </button>
       <button className="form__add-btn" type="button" onClick={handleAddField}>
         +
