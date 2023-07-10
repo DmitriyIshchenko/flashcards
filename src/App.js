@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Carousel from "./Carousel";
 import FlashCard from "./FlashCard";
-import DeckForm from "./DeckForm";
+import DeckForm from "./DeckForm/DeckForm";
 
 import "./index.scss";
 
