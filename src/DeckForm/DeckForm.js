@@ -32,10 +32,10 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
     Object.values(termInputFields[0]).every((value) => value)
   );
 
-  function handleFieldChange(index, e) {
+  function handleFieldChange(key, value, index) {
     const data = [...termInputFields];
 
-    data[index][e.target.name] = e.target.value;
+    data[index][key] = value;
 
     setTermInputFields(data);
   }
