@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import "./AddSetForm.scss";
+import "./DeckForm.scss";
 
 function usePrevious(value) {
   const ref = useRef();
@@ -11,79 +11,79 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default function AddSetForm({ onSaveSet, setToEdit }) {
-  const [title, setTitle] = useState(() => setToEdit?.title || "");
+export default function DeckForm({ onSaveDeck, deckToEdit }) {
+  const [title, setTitle] = useState(() => deckToEdit?.title || "");
   const [description, setDescription] = useState(
-    () => setToEdit?.description || ""
+    () => deckToEdit?.description || ""
   );
-  const [inputFields, setInputFields] = useState(() => {
+  const [termInputFields, setTermInputFields] = useState(() => {
     return (
-      setToEdit?.terms || [
+      deckToEdit?.terms || [
         { term: "", description: "", id: crypto.randomUUID() },
       ]
     );
   });
-  const prevInputFields = usePrevious(inputFields);
+  const prevTermInputFields = usePrevious(termInputFields);
 
   const canSave = !!(
     title &&
     description &&
-    Object.values(inputFields[0]).every((value) => value)
+    Object.values(termInputFields[0]).every((value) => value)
   );
 
   function handleFieldChange(index, e) {
-    const data = [...inputFields];
+    const data = [...termInputFields];
 
     data[index][e.target.name] = e.target.value;
 
-    setInputFields(data);
+    setTermInputFields(data);
   }
 
   function handleAddField() {
     const newField = { term: "", description: "", id: crypto.randomUUID() };
 
-    setInputFields((currentFields) => [...currentFields, newField]);
+    setTermInputFields((currentFields) => [...currentFields, newField]);
   }
 
   function handleDeleteField(index) {
-    const data = [...inputFields];
+    const data = [...termInputFields];
     data.splice(index, 1);
-    setInputFields(data);
+    setTermInputFields(data);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newSet = {
-      id: setToEdit?.id || crypto.randomUUID(),
+    const newDeck = {
+      id: deckToEdit?.id || crypto.randomUUID(),
       title,
       description,
-      terms: inputFields,
+      terms: termInputFields,
     };
 
-    onSaveSet(newSet);
+    onSaveDeck(newDeck);
   }
 
   useEffect(() => {
-    if (inputFields.length <= prevInputFields?.length) return;
+    if (termInputFields.length <= prevTermInputFields?.length) return;
 
     window.scrollTo(0, document.body.scrollHeight);
-  }, [inputFields, prevInputFields]);
+  }, [termInputFields, prevTermInputFields]);
 
   return (
     <form className="form" onSubmit={handleSubmit}>
       <header className="form__header">
         <div className="form__controls">
-          {setToEdit && <button className="form__back-btn">&larr;</button>}
+          {deckToEdit && <button className="form__back-btn">&larr;</button>}
           <h2 className="form__title">
-            {setToEdit ? "Back to set" : "Create a flashcard set"}
+            {deckToEdit ? "Back to deck" : "Create a flashcard deck"}
           </h2>
           <button
             type="submit"
             className="form__submit-btn form__submit-btn--top"
             disabled={!canSave}
           >
-            {setToEdit ? "Save" : "Create"}
+            {deckToEdit ? "Save" : "Create"}
           </button>
         </div>
 
@@ -117,14 +117,14 @@ export default function AddSetForm({ onSaveSet, setToEdit }) {
       </header>
 
       <fieldset className="form__set">
-        {inputFields.map((field, index) => (
+        {termInputFields.map((field, index) => (
           <TermInput
             key={field.id}
             index={index}
             field={field}
             onFieldChange={handleFieldChange}
             onDeleteField={handleDeleteField}
-            isOnlyItem={inputFields.length === 1}
+            isOnlyItem={termInputFields.length === 1}
           />
         ))}
       </fieldset>
@@ -134,7 +134,7 @@ export default function AddSetForm({ onSaveSet, setToEdit }) {
         className="form__submit-btn form__submit-btn--bottom"
         disabled={!canSave}
       >
-        {setToEdit ? "Save" : "Create"}
+        {deckToEdit ? "Save" : "Create"}
       </button>
       <button className="form__add-btn" type="button" onClick={handleAddField}>
         +

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Carousel from "./Carousel";
 import FlashCard from "./FlashCard";
-import AddSetForm from "./AddSetForm";
+import DeckForm from "./DeckForm";
 
 import "./index.scss";
 
@@ -79,7 +79,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <AddSetForm onSaveDeck={handleSaveDeck} />
+      <DeckForm onSaveDeck={handleSaveDeck} />
       {/* <Carousel>
         {decks[0].terms.map((item) => (
           <FlashCard
