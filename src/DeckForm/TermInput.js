@@ -5,6 +5,31 @@ import "./TermInput.scss";
 const IMAGES_API_URL = "https://api.unsplash.com/search/photos";
 const IMAGES_API_KEY = "zoLLYgXpGBOsvFhqJes-gEEiwH5P8qdDnP-z4MxHkaM";
 
+const WORDS_API_URL =
+  "https://dictionaryapi.com/api/v3/references/learners/json/";
+const WORDS_API_KEY = "662bbdcb-bbc5-4cb9-beb1-710821e95385";
+
+function formatDescription(data, term) {
+  console.log(data);
+  const description = data.shortdef.join(";\n");
+  const examples = data.def
+    .map((def) => def.sseq)
+    .flat(Infinity)
+    .filter((item) => typeof item !== "string" && item.dt)
+    .map((obj) => obj.dt)
+    .flat(Infinity)
+    .filter((item) => typeof item !== "string" && item.t)
+    .map((obj) =>
+      obj.t
+        .replaceAll(/{.*}(.*){.*}/g, "$1")
+        .replaceAll(term, "_".repeat(term.length))
+    )
+    .slice(0, 5)
+    .join("\n");
+
+  return `${description}${examples.length ? "\n".repeat(3) : ""}${examples}`;
+}
+
 export function TermInput({
   index,
   field,
@@ -24,13 +49,29 @@ export function TermInput({
 
     if (key !== "description") return;
 
-    // auto grow textarea
+    // TODO auto grow textarea
     textAreaRef.current.style.height = "auto";
     const { scrollHeight } = textAreaRef.current;
     textAreaRef.current.style.height = scrollHeight + "px";
   }
 
-  async function handleFetch(e) {
+  async function handleFetchWord() {
+    if (!term) return;
+
+    try {
+      const res = await fetch(`${WORDS_API_URL}${term}?key=${WORDS_API_KEY}`);
+      const data = await res.json();
+
+      const description = data.find((entry) => entry.def);
+      const result = formatDescription(description, term);
+
+      handleChange("description", result);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function handleFetchImages() {
     if (!term) return;
 
     try {
@@ -52,6 +93,14 @@ export function TermInput({
     <div className="word">
       <header className="word__header">
         <span className="word__number">{index + 1}</span>
+        <button
+          type="button"
+          title="Get description from Merriam-Webster"
+          className="word__search-btn"
+          onClick={handleFetchWord}
+        >
+          🔍️
+        </button>
         <button
           type="button"
           className="word__delete-btn"
@@ -98,7 +147,7 @@ export function TermInput({
             </>
           ) : (
             <button
-              onClick={handleFetch}
+              onClick={handleFetchImages}
               type="button"
               className="word__img-add-btn"
             >
