@@ -38,8 +38,8 @@ export function TermInput({
   onDeleteField,
   isOnlyItem,
 }) {
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadedImages, setLoadedImages] = useState([]);
+  const [areImagesLoading, setAreImagesLoading] = useState(false);
   const [isImageMenuOpen, setIsImageMenuOpen] = useState(false);
   const descriptionRef = useRef(null);
 
@@ -72,15 +72,15 @@ export function TermInput({
     if (!term) return;
 
     try {
-      setIsLoading(true);
+      setAreImagesLoading(true);
       setIsImageMenuOpen(true);
       const res = await fetch(
         `${IMAGES_API_URL}?client_id=${IMAGES_API_KEY}&page=1&per_page=5&query=${term}`
       );
       const data = await res.json();
 
-      setIsLoading(false);
-      setImages(data.results.map((image) => image.urls.small));
+      setAreImagesLoading(false);
+      setLoadedImages(data.results.map((image) => image.urls));
     } catch (err) {
       console.log(err);
     }
@@ -144,7 +144,7 @@ export function TermInput({
               >
                 &times;
               </button>
-              <img src={image} alt={term} />
+              <img src={image.thumb} alt={term} />
             </>
           ) : (
             <button
@@ -160,16 +160,16 @@ export function TermInput({
 
       {isImageMenuOpen && (
         <div className="word__images-menu">
-          {isLoading ? (
+          {areImagesLoading ? (
             <p className="word__images-menu-loader">Loading...</p>
           ) : (
-            images.map((imageURL, index) => (
+            loadedImages.map((imageURLs, index) => (
               <img
-                src={imageURL}
+                src={imageURLs.small}
                 alt={term}
                 key={index}
                 onClick={() => {
-                  handleChange("image", imageURL);
+                  handleChange("image", imageURLs);
                   setIsImageMenuOpen(false);
                 }}
               />
