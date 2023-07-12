@@ -58,14 +58,15 @@
   }
 
   &__content {
-    display: flex;
-    align-items: start;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 10%;
     gap: 3rem;
+    align-items: start;
   }
 
-  &__input {
+  &__term {
     padding-block: 1rem;
-    flex: 1;
     height: 4rem;
 
     outline: none;
@@ -83,9 +84,29 @@
     }
   }
 
-  &__input--description {
-    overflow: hidden;
-    resize: none;
+  &__description {
+    // prevent from stretching
+    min-width: 0;
+
+    padding-block: 0.85rem;
+    outline: none;
+    white-space: pre-wrap;
+    transition: all 0.3s;
+
+    border-bottom: 0.3rem solid #000;
+    font-size: 1.6rem;
+    font-weight: 600;
+
+    &:focus {
+      border-color: var(--clr-accent);
+    }
+
+    &[contenteditable="true"]:empty:before {
+      content: attr(data-placeholder);
+      pointer-events: none;
+      color: #777;
+      display: block; /* For Firefox */
+    }
   }
 
   &__images-menu {

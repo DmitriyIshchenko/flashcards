@@ -10,7 +10,8 @@ const WORDS_API_URL =
 const WORDS_API_KEY = "662bbdcb-bbc5-4cb9-beb1-710821e95385";
 
 function formatDescription(data, term) {
-  console.log(data);
+  if (!data) return "";
+
   const description = data.shortdef.join(";\n");
   const examples = data.def
     .map((def) => def.sseq)
@@ -40,19 +41,14 @@ export function TermInput({
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isImageMenuOpen, setIsImageMenuOpen] = useState(false);
+  const descriptionRef = useRef(null);
 
-  const textAreaRef = useRef(null);
-  const { term, description, image } = field;
+  const { term, image } = field;
 
   function handleChange(key, value) {
     onFieldChange(key, value, index);
 
     if (key !== "description") return;
-
-    // TODO auto grow textarea
-    textAreaRef.current.style.height = "auto";
-    const { scrollHeight } = textAreaRef.current;
-    textAreaRef.current.style.height = scrollHeight + "px";
   }
 
   async function handleFetchWord() {
@@ -65,8 +61,12 @@ export function TermInput({
       const description = data.find((entry) => entry.def);
       const result = formatDescription(description, term);
 
+      // manually update contenteditable div
+      descriptionRef.current.textContent = result;
+
       handleChange("description", result);
     } catch (err) {
+      handleChange("description", "");
       console.log(err);
     }
   }
@@ -113,7 +113,7 @@ export function TermInput({
 
       <div className="word__content">
         <input
-          className="word__input word__input--term"
+          className="word__term"
           name="term"
           type="text"
           placeholder="Term"
@@ -122,16 +122,15 @@ export function TermInput({
           required
         />
 
-        <textarea
-          className="word__input word__input--description"
-          name="description"
-          rows={1}
-          ref={textAreaRef}
-          placeholder="Description"
-          value={description}
-          onChange={(e) => handleChange(e.target.name, e.target.value)}
-          required
-        ></textarea>
+        <div
+          className="word__description"
+          contentEditable="true"
+          name="q"
+          onInput={(e) => handleChange("description", e.target.textContent)}
+          suppressContentEditableWarning={true}
+          ref={descriptionRef}
+          data-placeholder="Description"
+        ></div>
 
         <div className="word__image">
           {image ? (
