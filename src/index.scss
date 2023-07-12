@@ -8,9 +8,17 @@
 
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
 body {
   box-sizing: border-box;
   font-family: "Bw Modelica SS01", sans-serif;
+  background-color: #f4f4f4;
+}
+
+:root {
+  --clr-accent: #50d2c2;
+  --clr-red: #ff6b6b;
+  --clr-red-lighter: #ff8787;
 }

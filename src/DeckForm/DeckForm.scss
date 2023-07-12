@@ -1,0 +1,143 @@
+.form {
+  display: grid;
+  align-items: center;
+
+  width: 80%;
+  margin: 0 auto;
+  margin-block: 4rem;
+
+  &__header {
+    display: grid;
+    gap: 3rem;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 2rem;
+    // justify-content: space-between;
+    align-items: center;
+  }
+
+  &__submit-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 1rem;
+
+    background-color: #000;
+    color: #fff;
+
+    transition: all 0.3s;
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 1.6rem;
+    font-weight: 700;
+
+    &:hover,
+    &:active {
+      background-color: #343a40;
+    }
+
+    &:disabled {
+      background-color: #868e96;
+    }
+
+    &--bottom {
+      justify-self: center;
+    }
+
+    &--top {
+      margin-left: auto;
+    }
+  }
+
+  &__back-btn {
+    transition: all 0.3s;
+
+    height: 3.6rem;
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 100rem;
+
+    background-color: #fff;
+    color: #000;
+    font-size: 3rem;
+
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+      background-color: #ccc;
+    }
+  }
+
+  &__title {
+    font-size: 2.6rem;
+  }
+
+  &__info {
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+  }
+
+  &__set {
+    display: grid;
+    gap: 4rem;
+
+    margin-top: 5rem;
+    margin-bottom: 4rem;
+    border: none;
+  }
+
+  &__label {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+
+  &__input {
+    border: 2px solid #000;
+    padding: 1rem 1.5rem;
+    border-radius: 100rem;
+    width: 100%;
+
+    background: transparent;
+    transition: all 0.2s;
+
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1.6rem;
+
+    &:focus {
+      border-color: var(--clr-accent);
+      outline: none;
+    }
+  }
+
+  &__add-btn {
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+
+    transition: all 0.3s;
+
+    height: 6rem;
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 100rem;
+
+    background-color: #000;
+    color: #fff;
+    font-size: 4rem;
+
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+      background-color: lighten(#000, 25%);
+    }
+  }
+}
