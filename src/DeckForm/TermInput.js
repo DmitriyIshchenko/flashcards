@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "./TermInput.scss";
 
@@ -43,7 +43,7 @@ export function TermInput({
   const [isImageMenuOpen, setIsImageMenuOpen] = useState(false);
   const descriptionRef = useRef(null);
 
-  const { term, image } = field;
+  const { term, description, image } = field;
 
   function handleChange(key, value) {
     onFieldChange(key, value, index);
@@ -60,9 +60,6 @@ export function TermInput({
 
       const description = data.find((entry) => entry.def);
       const result = formatDescription(description, term);
-
-      // manually update contenteditable div
-      descriptionRef.current.textContent = result;
 
       handleChange("description", result);
     } catch (err) {
@@ -89,8 +86,13 @@ export function TermInput({
     }
   }
 
+  useEffect(() => {
+    // manually update contenteditable div
+    descriptionRef.current.textContent = description;
+  }, [description, descriptionRef]);
+
   return (
-    <div className="word">
+    <li className="word">
       <header className="word__header">
         <span className="word__number">{index + 1}</span>
         <button
@@ -175,6 +177,6 @@ export function TermInput({
           )}
         </div>
       )}
-    </div>
+    </li>
   );
 }
