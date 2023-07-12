@@ -117,7 +117,7 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
         </div>
       </header>
 
-      <fieldset className="form__set">
+      <ol className="form__set">
         {termInputFields.map((field, index) => (
           <TermInput
             key={field.id}
@@ -128,7 +128,7 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
             isOnlyItem={termInputFields.length === 1}
           />
         ))}
-      </fieldset>
+      </ol>
 
       <button
         type="submit"
