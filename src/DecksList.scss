@@ -1,0 +1,60 @@
+.deck-list {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, 35rem);
+  gap: 3rem;
+
+  // TEMP STYLES
+  margin: 3rem;
+}
+
+.deck {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2.5rem;
+
+  padding: 2rem;
+  list-style: none;
+  background-color: #fff;
+
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+
+  &__title {
+    line-height: 1.5;
+    font-size: 1.8rem;
+  }
+
+  &__tag {
+    align-self: start;
+
+    padding: 0.3rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--clr-tag);
+
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--clr-tag-text);
+  }
+
+  &__btn {
+    align-self: end;
+    height: 3rem;
+    aspect-ratio: 1;
+
+    border-radius: 100rem;
+    border: none;
+    background-color: transparent;
+
+    cursor: pointer;
+    transition: all 0.3s;
+
+    font-size: 2rem;
+    font-weight: 900;
+
+    &:hover {
+      background-color: darken(#fff, 10%);
+    }
+  }
+}
