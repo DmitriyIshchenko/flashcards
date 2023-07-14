@@ -1,6 +1,7 @@
 import "./DecksList.scss";
 import Button from "../Buttons/Button";
 import Card from "../Card/Card";
+import Dropdown from "../Dropdown/Dropdown";
 
 export default function DecksList({ decks }) {
   return (
@@ -26,8 +27,23 @@ function DeckCard({ deck }) {
         {terms.length} term{terms.length === 1 ? "" : "s"}
       </span>
 
-      {/* dropdown */}
-      <button className="deck__btn">&#8230;</button>
+      {/* <button className="deck__btn">&#8230;</button> */}
+      <Dropdown
+        className="deck__dropdown"
+        renderTrigger={(onClick) => (
+          <Button round className="dropdown__trigger" onClick={onClick}>
+            ...
+          </Button>
+        )}
+        menu={[
+          <a href="/edit" className="dropdown__btn">
+            Edit
+          </a>,
+          <button className="dropdown__btn dropdown__btn--delete">
+            Delete
+          </button>,
+        ]}
+      />
     </Card>
   );
 }
