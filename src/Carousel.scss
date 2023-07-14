@@ -61,6 +61,10 @@
     aspect-ratio: 1;
     font-size: 3rem;
 
+    &:disabled {
+      background-color: var(--clr-black);
+    }
+
     &--left {
       grid-column: 1/2;
       grid-row: 1/2;

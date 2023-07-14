@@ -1,5 +1,6 @@
 import "./Carousel.scss";
 import { useRef, useState } from "react";
+import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 import { CSSTransition } from "react-transition-group";
 
 export default function Carousel({ children }) {
@@ -67,7 +68,7 @@ export default function Carousel({ children }) {
         disabled={isControlsDisabled}
         onClick={handleMove}
       >
-        &larr;
+        <BsArrowLeftShort />
       </button>
       <button
         className="carousel__btn carousel__btn--right"
@@ -75,7 +76,7 @@ export default function Carousel({ children }) {
         disabled={isControlsDisabled}
         onClick={handleMove}
       >
-        &rarr;
+        <BsArrowRightShort />
       </button>
     </div>
   );
