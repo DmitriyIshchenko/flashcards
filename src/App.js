@@ -5,7 +5,7 @@ import FlashCard from "./FlashCard";
 import DeckForm from "./DeckForm/DeckForm";
 
 import "./index.scss";
-import DecksList from "./DecksList";
+import DecksList from "./DecksList/DecksList";
 
 // const initialDecks = [
 //   {
