@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { TermInput } from "./TermInput";
-import Button from "../Buttons/Button";
+import Button from "../UI/Buttons/Button";
 import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
-import { usePrevious } from "../hooks/usePrevious";
+import { usePrevious } from "../../hooks/usePrevious";
 
 import "./DeckForm.scss";
 export default function DeckForm({ onSaveDeck, deckToEdit }) {

@@ -1,7 +1,7 @@
 import "./DecksList.scss";
-import Button from "../Buttons/Button";
-import Card from "../Card/Card";
-import Dropdown from "../Dropdown/Dropdown";
+import Button from "../UI/Buttons/Button";
+import Card from "../UI/Card/Card";
+import Dropdown from "../UI/Dropdown/Dropdown";
 import { BsThreeDots, BsPlus } from "react-icons/bs";
 import { PiCardsDuotone } from "react-icons/pi";
 

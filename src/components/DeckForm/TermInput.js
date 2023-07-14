@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Button from "../Buttons/Button";
-import Card from "../Card/Card";
+import Button from "../UI/Buttons/Button";
+import Card from "../UI/Card/Card";
 import { BiSolidImageAdd } from "react-icons/bi";
 import { TbWorldSearch } from "react-icons/tb";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -11,7 +11,7 @@ import {
   WORDS_API_KEY,
   IMAGES_API_URL,
   IMAGES_API_KEY,
-} from "../config";
+} from "../../helpers/config";
 
 function formatDescription(data, term) {
   if (!data) return "";

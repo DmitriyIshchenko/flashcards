@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useLocalStorageState } from "./hooks/useLocalStorage";
-import Carousel from "./Carousel";
-import FlashCard from "./FlashCard";
-import DeckForm from "./DeckForm/DeckForm";
+import Carousel from "./components/UI/Carousel/Carousel";
+import FlashCard from "./components/DeckCards/FlashCard";
+import DeckForm from "./components/DeckForm/DeckForm";
+import DecksList from "./components/DecksList/DecksList";
 
 import "./index.scss";
-import DecksList from "./DecksList/DecksList";
 
 // const initialDecks = [
 //   {
@@ -85,8 +85,8 @@ export default function App() {
   return (
     <div className="App">
       <DecksList decks={decks} />
-      {/* <DeckForm onSaveDeck={handleSaveDeck} deckToEdit={decks[0]} /> */}
-      {/* <Carousel>
+      <DeckForm onSaveDeck={handleSaveDeck} deckToEdit={decks[0]} />
+      <Carousel>
         {decks[0].terms.map((item) => (
           <FlashCard
             key={item.term}
@@ -95,7 +95,7 @@ export default function App() {
             onFlip={handleFlip}
           />
         ))}
-      </Carousel> */}
+      </Carousel>
     </div>
   );
 }
