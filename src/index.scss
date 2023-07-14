@@ -17,6 +17,10 @@ body {
   background-color: #f4f4f4;
 }
 
+svg {
+  pointer-events: none;
+}
+
 :root {
   --clr-accent: #50d2c2;
   --clr-accent-dark: #48bdaf;
