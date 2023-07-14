@@ -50,9 +50,6 @@
   }
 
   &__btn {
-    // center buttons relative to the content
-    transform: translateY(-2rem);
-
     @extend %btn;
 
     padding: 0;

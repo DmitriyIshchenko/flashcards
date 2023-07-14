@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "../Buttons/Button";
+import Card from "../Card/Card";
 
 import "./TermInput.scss";
 
@@ -93,7 +94,7 @@ export function TermInput({
   }, [description, descriptionRef]);
 
   return (
-    <li className="word">
+    <Card className="word" listItem>
       <header className="word__header">
         <span className="word__number">{index + 1}</span>
         <Button
@@ -181,6 +182,6 @@ export function TermInput({
           )}
         </div>
       )}
-    </li>
+    </Card>
   );
 }
