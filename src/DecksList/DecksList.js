@@ -2,11 +2,16 @@ import "./DecksList.scss";
 
 export default function DecksList({ decks }) {
   return (
-    <ul className="deck-list">
-      {decks.map((deck) => (
-        <DeckCard key={deck.id} deck={deck} />
-      ))}
-    </ul>
+    <div className="decks">
+      <ul className="decks-list">
+        {decks.map((deck) => (
+          <DeckCard key={deck.id} deck={deck} />
+        ))}
+      </ul>
+      <button className="decks__add-btn" type="button">
+        +
+      </button>
+    </div>
   );
 }
 

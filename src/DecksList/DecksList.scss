@@ -1,11 +1,37 @@
-.deck-list {
-  display: grid;
+.decks {
+  &-list {
+    display: grid;
 
-  grid-template-columns: repeat(auto-fit, 35rem);
-  gap: 3rem;
+    grid-template-columns: repeat(auto-fit, 35rem);
+    gap: 3rem;
 
-  // TEMP STYLES
-  margin: 3rem;
+    // TEMP STYLES
+    margin: 3rem;
+  }
+
+  &__add-btn {
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+
+    transition: all 0.3s;
+
+    height: 6rem;
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 100rem;
+
+    background-color: #000;
+    color: #fff;
+    font-size: 4rem;
+
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+      background-color: lighten(#000, 25%);
+    }
+  }
 }
 
 .deck {
