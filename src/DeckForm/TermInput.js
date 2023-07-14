@@ -6,13 +6,12 @@ import { TbWorldSearch } from "react-icons/tb";
 import { BsFillTrashFill } from "react-icons/bs";
 
 import "./TermInput.scss";
-
-const IMAGES_API_URL = "https://api.unsplash.com/search/photos";
-const IMAGES_API_KEY = "zoLLYgXpGBOsvFhqJes-gEEiwH5P8qdDnP-z4MxHkaM";
-
-const WORDS_API_URL =
-  "https://dictionaryapi.com/api/v3/references/learners/json/";
-const WORDS_API_KEY = "662bbdcb-bbc5-4cb9-beb1-710821e95385";
+import {
+  WORDS_API_URL,
+  WORDS_API_KEY,
+  IMAGES_API_URL,
+  IMAGES_API_KEY,
+} from "../config";
 
 function formatDescription(data, term) {
   if (!data) return "";
