@@ -66,10 +66,11 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
   }
 
   useEffect(() => {
-    if (termInputFields.length <= prevTermInputFields?.length) return;
+    if (termInputFields.length <= prevTermInputFields?.length || deckToEdit)
+      return;
 
     window.scrollTo(0, document.body.scrollHeight);
-  }, [termInputFields, prevTermInputFields]);
+  }, [termInputFields, prevTermInputFields, deckToEdit]);
 
   return (
     <form className="form" onSubmit={handleSubmit}>
