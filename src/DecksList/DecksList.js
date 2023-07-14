@@ -2,6 +2,8 @@ import "./DecksList.scss";
 import Button from "../Buttons/Button";
 import Card from "../Card/Card";
 import Dropdown from "../Dropdown/Dropdown";
+import { BsThreeDots, BsPlus } from "react-icons/bs";
+import { PiCardsDuotone } from "react-icons/pi";
 
 export default function DecksList({ decks }) {
   return (
@@ -12,7 +14,7 @@ export default function DecksList({ decks }) {
         ))}
       </ul>
       <Button round type="button" className="decks__add-btn">
-        +
+        <BsPlus />
       </Button>
     </div>
   );
@@ -22,17 +24,18 @@ function DeckCard({ deck }) {
   const { title, terms } = deck;
   return (
     <Card className="deck" listItem>
-      <h3 className="deck__title">🗂️ {title}</h3>
+      <h3 className="deck__title">
+        <PiCardsDuotone size={"2.5rem"} /> <span>{title}</span>
+      </h3>
       <span className="deck__tag">
         {terms.length} term{terms.length === 1 ? "" : "s"}
       </span>
 
-      {/* <button className="deck__btn">&#8230;</button> */}
       <Dropdown
         className="deck__dropdown"
         renderTrigger={(onClick) => (
           <Button round className="dropdown__trigger" onClick={onClick}>
-            ...
+            <BsThreeDots />
           </Button>
         )}
         menu={[

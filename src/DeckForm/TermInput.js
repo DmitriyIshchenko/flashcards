@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "../Buttons/Button";
 import Card from "../Card/Card";
+import { BiSolidImageAdd } from "react-icons/bi";
+import { TbWorldSearch } from "react-icons/tb";
+import { BsFillTrashFill } from "react-icons/bs";
 
 import "./TermInput.scss";
 
@@ -104,7 +107,7 @@ export function TermInput({
           className="word__search-btn"
           onClick={handleFetchWord}
         >
-          🔍️
+          <TbWorldSearch />
         </Button>
         <Button
           round
@@ -113,7 +116,7 @@ export function TermInput({
           onClick={() => onDeleteField(index)}
           disabled={isOnlyItem}
         >
-          &times;
+          <BsFillTrashFill />
         </Button>
       </header>
 
@@ -157,7 +160,8 @@ export function TermInput({
               type="button"
               className="word__img-add-btn"
             >
-              <span>Find Image</span>
+              <BiSolidImageAdd size={"4rem"} />
+              <span>Image</span>
             </button>
           )}
         </div>
