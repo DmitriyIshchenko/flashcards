@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { TermInput } from "./TermInput";
 import Button from "../Buttons/Button";
+import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
 
 import "./DeckForm.scss";
 function usePrevious(value) {
@@ -79,7 +80,7 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
         <div className="form__controls">
           {deckToEdit && (
             <Button round className="form__back-btn">
-              &larr;
+              <BsArrowLeftShort />
             </Button>
           )}
           <h2 className="form__title">
@@ -150,7 +151,7 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
         type="button"
         onClick={handleAddField}
       >
-        +
+        <BsPlus />
       </Button>
     </form>
   );
