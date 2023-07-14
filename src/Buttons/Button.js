@@ -9,7 +9,6 @@ export default function Button({
   disabled,
   title,
 }) {
-  console.log(round);
   return (
     <button
       type={type}
