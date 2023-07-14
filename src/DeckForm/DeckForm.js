@@ -1,19 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { TermInput } from "./TermInput";
 import Button from "../Buttons/Button";
 import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
+import { usePrevious } from "../hooks/usePrevious";
 
 import "./DeckForm.scss";
-function usePrevious(value) {
-  const ref = useRef();
-
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-
-  return ref.current;
-}
-
 export default function DeckForm({ onSaveDeck, deckToEdit }) {
   const [title, setTitle] = useState(() => deckToEdit?.title || "");
   const [description, setDescription] = useState(
