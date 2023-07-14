@@ -29,7 +29,16 @@
   padding: 2rem;
 
   &__title {
-    line-height: 1.5;
+    display: flex;
+    gap: 1rem;
+
+    svg {
+      color: var(--clr-tag-text);
+    }
+    span {
+      flex: 1;
+    }
+
     font-size: 1.8rem;
   }
 
