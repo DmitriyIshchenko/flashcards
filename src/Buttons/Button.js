@@ -7,6 +7,7 @@ export default function Button({
   children,
   round,
   disabled,
+  title,
 }) {
   console.log(round);
   return (
@@ -15,6 +16,7 @@ export default function Button({
       disabled={disabled}
       className={`btn ${round ? `btn--round` : ""} ${className}`}
       onClick={onClick}
+      title={title}
     >
       {children}
     </button>

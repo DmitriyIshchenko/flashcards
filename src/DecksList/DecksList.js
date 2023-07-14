@@ -1,4 +1,5 @@
 import "./DecksList.scss";
+import Button from "../Buttons/Button";
 
 export default function DecksList({ decks }) {
   return (
@@ -8,9 +9,9 @@ export default function DecksList({ decks }) {
           <DeckCard key={deck.id} deck={deck} />
         ))}
       </ul>
-      <button className="decks__add-btn" type="button">
+      <Button round type="button" className="decks__add-btn">
         +
-      </button>
+      </Button>
     </div>
   );
 }
@@ -24,6 +25,7 @@ function DeckCard({ deck }) {
         {terms.length} term{terms.length === 1 ? "" : "s"}
       </span>
 
+      {/* dropdown */}
       <button className="deck__btn">&#8230;</button>
     </li>
   );

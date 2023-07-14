@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Button from "../Buttons/Button";
 
 import "./TermInput.scss";
 
@@ -95,22 +96,24 @@ export function TermInput({
     <li className="word">
       <header className="word__header">
         <span className="word__number">{index + 1}</span>
-        <button
+        <Button
+          round
           type="button"
           title="Get description from Merriam-Webster"
           className="word__search-btn"
           onClick={handleFetchWord}
         >
           🔍️
-        </button>
-        <button
+        </Button>
+        <Button
+          round
           type="button"
           className="word__delete-btn"
           onClick={() => onDeleteField(index)}
           disabled={isOnlyItem}
         >
           &times;
-        </button>
+        </Button>
       </header>
 
       <div className="word__content">
@@ -137,13 +140,14 @@ export function TermInput({
         <div className="word__image">
           {image ? (
             <>
-              <button
+              <Button
+                round
                 type="button"
                 className="word__img-delete-btn"
                 onClick={() => handleChange("image", "")}
               >
                 &times;
-              </button>
+              </Button>
               <img src={image.thumb} alt={term} />
             </>
           ) : (

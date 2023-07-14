@@ -77,7 +77,11 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
     <form className="form" onSubmit={handleSubmit}>
       <header className="form__header">
         <div className="form__controls">
-          {deckToEdit && <button className="form__back-btn">&larr;</button>}
+          {deckToEdit && (
+            <Button round className="form__back-btn">
+              &larr;
+            </Button>
+          )}
           <h2 className="form__title">
             {deckToEdit ? "Back to deck" : "Create a flashcard deck"}
           </h2>
@@ -140,9 +144,14 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
         {deckToEdit ? "Save" : "Create"}
       </Button>
 
-      <button className="form__add-btn" type="button" onClick={handleAddField}>
+      <Button
+        round
+        className="form__add-btn"
+        type="button"
+        onClick={handleAddField}
+      >
         +
-      </button>
+      </Button>
     </form>
   );
 }

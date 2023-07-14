@@ -8,7 +8,7 @@
   padding-inline: 4rem;
   padding-bottom: 4rem;
 
-  background-color: #fff;
+  background-color: var(--clr-white);
 
   &__header {
     display: flex;
@@ -22,39 +22,24 @@
     margin-right: auto;
   }
 
-  &__search-btn,
   &__delete-btn {
-    transition: all 0.3s;
-
-    border: none;
-    border-radius: 100rem;
-
-    width: 4rem;
-    aspect-ratio: 1;
     background-color: var(--clr-red);
-
+    width: 4rem;
     font-size: 3rem;
-
-    color: #fff;
-    cursor: pointer;
 
     &:hover,
     &:active {
-      background-color: var(--clr-red-lighter);
+      background-color: var(--clr-red-light);
     }
 
     &:disabled {
-      background-color: #ccc;
+      background-color: var(--clr-grey);
     }
   }
 
   &__search-btn {
-    background-color: #000;
+    width: 4rem;
     font-size: 1.6rem;
-
-    &:hover {
-      background-color: lighten(#000, 20%);
-    }
   }
 
   &__content {
@@ -71,7 +56,7 @@
 
     outline: none;
     border: none;
-    border-bottom: 0.3rem solid #000;
+    border-bottom: 0.3rem solid var(--clr-black);
 
     transition: all 0.2s;
 
@@ -93,7 +78,7 @@
     white-space: pre-wrap;
     transition: all 0.3s;
 
-    border-bottom: 0.3rem solid #000;
+    border-bottom: 0.3rem solid var(--clr-black);
     font-size: 1.6rem;
     font-weight: 600;
 
@@ -142,7 +127,7 @@
 
     aspect-ratio: 1;
     border-radius: 1rem;
-    border: 2px solid #ccc;
+    border: 2px solid var(--clr-grey-light);
 
     cursor: pointer;
 
@@ -184,21 +169,7 @@
     right: -0.5rem;
 
     width: 2.5rem;
-    aspect-ratio: 1;
 
-    border: none;
-    border-radius: 100rem;
-    background-color: #000;
-
-    transition: background-color 0.3s;
     font-size: 2rem;
-
-    color: #fff;
-    cursor: pointer;
-
-    &:hover,
-    &:active {
-      background-color: lighten(#000, 25%);
-    }
   }
 }
