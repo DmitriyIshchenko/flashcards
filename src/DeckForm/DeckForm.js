@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { TermInput } from "./TermInput";
+import Button from "../Buttons/Button";
 
 import "./DeckForm.scss";
 function usePrevious(value) {
@@ -80,13 +81,13 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
           <h2 className="form__title">
             {deckToEdit ? "Back to deck" : "Create a flashcard deck"}
           </h2>
-          <button
+          <Button
             type="submit"
             className="form__submit-btn form__submit-btn--top"
             disabled={!canSave}
           >
             {deckToEdit ? "Save" : "Create"}
-          </button>
+          </Button>
         </div>
 
         <div className="form__info">
@@ -131,13 +132,14 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
         ))}
       </ol>
 
-      <button
+      <Button
         type="submit"
         className="form__submit-btn form__submit-btn--bottom"
         disabled={!canSave}
       >
         {deckToEdit ? "Save" : "Create"}
-      </button>
+      </Button>
+
       <button className="form__add-btn" type="button" onClick={handleAddField}>
         +
       </button>
