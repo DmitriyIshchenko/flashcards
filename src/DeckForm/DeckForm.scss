@@ -19,29 +19,6 @@
   }
 
   &__submit-btn {
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 1rem;
-
-    background-color: #000;
-    color: #fff;
-
-    transition: all 0.3s;
-    cursor: pointer;
-
-    font-family: inherit;
-    font-size: 1.6rem;
-    font-weight: 700;
-
-    &:hover,
-    &:active {
-      background-color: #343a40;
-    }
-
-    &:disabled {
-      background-color: #868e96;
-    }
-
     &--bottom {
       justify-self: center;
     }
@@ -52,22 +29,15 @@
   }
 
   &__back-btn {
-    transition: all 0.3s;
-
     height: 3.6rem;
-    aspect-ratio: 1;
-    border: none;
-    border-radius: 100rem;
 
-    background-color: #fff;
-    color: #000;
+    background-color: var(--clr-white);
+    color: var(--clr-black);
     font-size: 3rem;
-
-    cursor: pointer;
 
     &:hover,
     &:active {
-      background-color: #ccc;
+      background-color: var(--clr-white);
     }
   }
 
@@ -99,7 +69,7 @@
   }
 
   &__input {
-    border: 2px solid #000;
+    border: 2px solid var(--clr-black);
     padding: 1rem 1.5rem;
     border-radius: 100rem;
     width: 100%;
@@ -122,22 +92,8 @@
     bottom: 3rem;
     right: 3rem;
 
-    transition: all 0.3s;
-
     height: 6rem;
-    aspect-ratio: 1;
-    border: none;
-    border-radius: 100rem;
 
-    background-color: #000;
-    color: #fff;
     font-size: 4rem;
-
-    cursor: pointer;
-
-    &:hover,
-    &:active {
-      background-color: lighten(#000, 25%);
-    }
   }
 }

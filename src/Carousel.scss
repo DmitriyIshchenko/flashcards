@@ -1,3 +1,5 @@
+@import "./Buttons/Button.scss";
+
 :root {
   --carousel-width: 64rem;
   --item-gap: 3rem;
@@ -48,26 +50,16 @@
   }
 
   &__btn {
-    // center buttons relative to the content
-    transform: translateY(-2rem);
+    @extend %btn;
 
-    transition: all 0.3s;
+    padding: 0;
+    aspect-ratio: 1;
+    border-radius: 100rem;
+    font-weight: 500;
 
     height: 3.6rem;
     aspect-ratio: 1;
-    border: none;
-    border-radius: 100rem;
-
-    background-color: #000;
-    color: #fff;
     font-size: 3rem;
-
-    cursor: pointer;
-
-    &:hover,
-    &:active {
-      background-color: lighten(#000, 25%);
-    }
 
     &--left {
       grid-column: 1/2;

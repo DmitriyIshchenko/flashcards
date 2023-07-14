@@ -1,24 +1,18 @@
 .flashcard {
-  display: grid;
-  place-items: center;
   position: relative;
 
+  display: grid;
+  place-items: center;
+
   height: 40rem;
-  padding: 3rem;
   width: var(--item-width);
-
-  margin: 0 auto;
-  padding-top: 2rem;
-
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border-radius: 1rem;
 
   &__title {
     position: absolute;
     top: 3rem;
     left: 3rem;
     font-size: 2rem;
-    color: #aaa;
+    color: var(--clr-grey);
   }
 
   &__content {

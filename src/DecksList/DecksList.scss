@@ -14,23 +14,9 @@
     bottom: 3rem;
     right: 3rem;
 
-    transition: all 0.3s;
-
     height: 6rem;
-    aspect-ratio: 1;
-    border: none;
-    border-radius: 100rem;
 
-    background-color: #000;
-    color: #fff;
     font-size: 4rem;
-
-    cursor: pointer;
-
-    &:hover,
-    &:active {
-      background-color: lighten(#000, 25%);
-    }
   }
 }
 
@@ -41,11 +27,6 @@
   gap: 2.5rem;
 
   padding: 2rem;
-  list-style: none;
-  background-color: #fff;
-
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 
   &__title {
     line-height: 1.5;
