@@ -4,6 +4,7 @@ import Card from "../UI/Card/Card";
 import Dropdown from "../UI/Dropdown/Dropdown";
 import { BsThreeDots, BsPlus } from "react-icons/bs";
 import { PiCardsDuotone } from "react-icons/pi";
+import { Link } from "react-router-dom";
 
 export default function DecksList({ decks }) {
   return (
@@ -13,20 +14,22 @@ export default function DecksList({ decks }) {
           <DeckCard key={deck.id} deck={deck} />
         ))}
       </ul>
-      <Button round type="button" className="decks__add-btn">
+      <Link to="new" className="decks__add-btn">
         <BsPlus />
-      </Button>
+      </Link>
     </div>
   );
 }
 
 function DeckCard({ deck }) {
-  const { title, terms } = deck;
+  const { title, terms, id } = deck;
   return (
     <Card className="deck" listItem>
-      <h3 className="deck__title">
-        <PiCardsDuotone size={"2.5rem"} /> <span>{title}</span>
-      </h3>
+      <Link to={`${id}`}>
+        <h3 className="deck__title">
+          <PiCardsDuotone size={"2.5rem"} /> <span>{title}</span>
+        </h3>
+      </Link>
       <span className="deck__tag">
         {terms.length} term{terms.length === 1 ? "" : "s"}
       </span>
@@ -39,9 +42,9 @@ function DeckCard({ deck }) {
           </Button>
         )}
         menu={[
-          <a href="/edit" className="dropdown__btn">
+          <Link to={`edit/${id}`} className="dropdown__btn">
             Edit
-          </a>,
+          </Link>,
           <button className="dropdown__btn dropdown__btn--delete">
             Delete
           </button>,
