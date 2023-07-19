@@ -29,21 +29,38 @@ export default function App() {
     setDecks(updatedDecks);
   }
 
-  useEffect(() => {
-    async function fetchDecks() {
-      setIsLoading(true);
-      try {
-        const res = await fetch(`${DECKS_API_URL}/decks`);
-        const data = await res.json();
+  async function fetchDecks() {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${DECKS_API_URL}/decks`);
+      const data = await res.json();
 
-        setDecks(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
+      setDecks(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
+  async function deleteDeck(id) {
+    setIsLoading(true);
+    try {
+      setDecks((decks) => decks.filter((deck) => deck.id !== id));
+      await fetch(`${DECKS_API_URL}/decks/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
     fetchDecks();
   }, []);
 
@@ -55,7 +72,10 @@ export default function App() {
           <Route path="login" element={<Login />} />
           <Route path="app" element={<AppLayout />}>
             <Route index element={<Navigate to="decks" />} />
-            <Route path="decks" element={<DecksList decks={decks} />} />
+            <Route
+              path="decks"
+              element={<DecksList decks={decks} onDeleteDeck={deleteDeck} />}
+            />
             <Route path="decks/:deckId" element={<Deck decks={decks} />} />
             <Route
               path="decks/new"
