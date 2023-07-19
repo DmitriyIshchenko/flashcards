@@ -63,6 +63,7 @@ export default function DeckForm({ decks, onSaveDeck }) {
     };
 
     onSaveDeck(newDeck);
+    navigate(deckId ? `/app/decks/${deckId}` : "/app/decks");
   }
 
   useEffect(() => {
