@@ -75,59 +75,22 @@ export default function DeckForm({ decks, onSaveDeck }) {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <header className="form__header">
-        <div className="form__controls">
-          {deckToEdit && (
-            <Button
-              round
-              className="form__back-btn"
-              onClick={() => navigate(-1)}
-            >
-              <BsArrowLeftShort />
-            </Button>
-          )}
-          <h2 className="form__title">
-            {deckToEdit ? "Back to deck" : "Create a flashcard deck"}
-          </h2>
-          <Button
-            type="submit"
-            className="form__submit-btn form__submit-btn--top"
-            disabled={!canSave}
-          >
-            {deckToEdit ? "Save" : "Create"}
-          </Button>
-        </div>
+      <FormHeader
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+      >
+        <FormControls deckId={deckId} canSave={canSave} />
+        <FormInfo
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+        />
+      </FormHeader>
 
-        <div className="form__info">
-          <label htmlFor="title" className="form__label">
-            Title
-            <input
-              type="text"
-              id="title"
-              className="form__input"
-              placeholder="Enter a title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </label>
-
-          <label htmlFor="description" className="form__label">
-            Description
-            <input
-              type="text"
-              id="description"
-              className="form__input"
-              placeholder="Complete a description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-      </header>
-
-      <ol className="form__set">
+      <FormFields>
         {termInputFields.map((field, index) => (
           <TermInput
             key={field.id}
@@ -138,7 +101,7 @@ export default function DeckForm({ decks, onSaveDeck }) {
             isOnlyItem={termInputFields.length === 1}
           />
         ))}
-      </ol>
+      </FormFields>
 
       <Button
         type="submit"
@@ -158,4 +121,67 @@ export default function DeckForm({ decks, onSaveDeck }) {
       </Button>
     </form>
   );
+}
+
+function FormHeader({ children }) {
+  return <header className="form__header">{children}</header>;
+}
+
+function FormControls({ deckId, canSave }) {
+  const navigate = useNavigate();
+  return (
+    <div className="form__controls">
+      {deckId && (
+        <Button round className="form__back-btn" onClick={() => navigate(-1)}>
+          <BsArrowLeftShort />
+        </Button>
+      )}
+      <h2 className="form__title">
+        {deckId ? "Back to deck" : "Create a flashcard deck"}
+      </h2>
+      <Button
+        type="submit"
+        className="form__submit-btn form__submit-btn--top"
+        disabled={!canSave}
+      >
+        {deckId ? "Save" : "Create"}
+      </Button>
+    </div>
+  );
+}
+
+function FormInfo({ title, setTitle, description, setDescription }) {
+  return (
+    <div className="form__info">
+      <label htmlFor="title" className="form__label">
+        Title
+        <input
+          type="text"
+          id="title"
+          className="form__input"
+          placeholder="Enter a title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+      </label>
+
+      <label htmlFor="description" className="form__label">
+        Description
+        <input
+          type="text"
+          id="description"
+          className="form__input"
+          placeholder="Complete a description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+      </label>
+    </div>
+  );
+}
+
+function FormFields({ children }) {
+  return <ol className="form__set">{children}</ol>;
 }
