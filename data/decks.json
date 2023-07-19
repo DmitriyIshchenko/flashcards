@@ -1,0 +1,54 @@
+{
+  "decks": [
+    {
+      "id": "1",
+      "title": "Food",
+      "description": "Food cards",
+      "terms": [
+        {
+          "term": "apple",
+          "description": "a round fruit with red, yellow, or green skin and firm white flesh —often used before another noun",
+          "image": null,
+          "id": "t1"
+        },
+        {
+          "term": "lemon",
+          "description": "a yellow citrus fruit that has a sour taste —often used before another noun",
+          "image": null,
+          "id": "t2"
+        },
+        {
+          "term": "carrot",
+          "description": "the long orange root of a plant that is eaten as a vegetable",
+          "image": null,
+          "id": "t3"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Vehicles",
+      "description": "vehicles cards",
+      "terms": [
+        {
+          "term": "car",
+          "description": "a vehicle that has four wheels and an engine and that is used for carrying passengers on roads —often used before another noun —called also (US) automobile",
+          "image": null,
+          "id": "t4"
+        },
+        {
+          "term": "train",
+          "description": "a group of vehicles that travel on a track and are connected to each other and usually to an engine : a connected group of railroad cars —often used before another noun",
+          "image": null,
+          "id": "t5"
+        },
+        {
+          "term": "plane",
+          "description": "a vehicle that has wings and an engine and can carry people or things in the air",
+          "image": null,
+          "id": "t6"
+        }
+      ]
+    }
+  ]
+}
