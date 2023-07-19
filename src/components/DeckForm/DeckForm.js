@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { TermInput } from "./TermInput";
+import TermInput from "./TermInput";
 import Button from "../UI/Buttons/Button";
 import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
 import { usePrevious } from "../../hooks/usePrevious";

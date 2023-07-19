@@ -35,7 +35,7 @@ function formatDescription(data, term) {
   return `${description}${examples.length ? "\n".repeat(3) : ""}${examples}`;
 }
 
-export function TermInput({
+export default function TermInput({
   index,
   field,
   onFieldChange,
