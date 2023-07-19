@@ -6,22 +6,22 @@ import { BsThreeDots, BsPlus } from "react-icons/bs";
 import { PiCardsDuotone } from "react-icons/pi";
 import { Link } from "react-router-dom";
 
-export default function DecksList({ decks }) {
+export default function DecksList({ decks, onDeleteDeck }) {
   return (
     <div className="decks">
       <ul className="decks-list">
         {decks.map((deck) => (
-          <DeckCard key={deck.id} deck={deck} />
+          <DeckCard key={deck.id} deck={deck} onDeleteDeck={onDeleteDeck} />
         ))}
       </ul>
-      <Link to="new" className="decks__add-btn">
+      <Link to="/app/form" className="decks__add-btn">
         <BsPlus />
       </Link>
     </div>
   );
 }
 
-function DeckCard({ deck }) {
+function DeckCard({ deck, onDeleteDeck }) {
   const { title, terms, id } = deck;
   return (
     <Card className="deck" listItem>
@@ -42,10 +42,13 @@ function DeckCard({ deck }) {
           </Button>
         )}
         menu={[
-          <Link to={`edit/${id}`} className="dropdown__btn">
+          <Link to={`/app/form/${id}`} className="dropdown__btn">
             Edit
           </Link>,
-          <button className="dropdown__btn dropdown__btn--delete">
+          <button
+            className="dropdown__btn dropdown__btn--delete"
+            onClick={() => onDeleteDeck(id)}
+          >
             Delete
           </button>,
         ]}

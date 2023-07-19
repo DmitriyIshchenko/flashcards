@@ -51,7 +51,6 @@ export default function FieldImageMenu({ field, dispatch }) {
 }
 function FieldImage({ field, dispatch, handleFetchImages, isMenuOpen }) {
   const { term, image, id } = field;
-  console.log(isMenuOpen);
   return (
     <div className="word__image">
       {image ? (
