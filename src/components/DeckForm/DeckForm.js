@@ -30,8 +30,8 @@ function reducer(state, action) {
       };
     case "fields/change":
       const updatedFields = [...state.fields];
-      const { field, value, index } = action.payload;
-      updatedFields[index][field] = value;
+      const { field, value, fieldIndex } = action.payload;
+      updatedFields[fieldIndex][field] = value;
 
       return { ...state, fields: updatedFields };
     default:
