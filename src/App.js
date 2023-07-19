@@ -1,4 +1,4 @@
-import { useLocalStorageState } from "./hooks/useLocalStorage";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import Homepage from "./pages/Homepage";
@@ -9,10 +9,13 @@ import DeckForm from "./components/DeckForm/DeckForm";
 import DecksList from "./components/DecksList/DecksList";
 import Deck from "./components/Deck/Deck";
 
+import { DECKS_API_URL } from "./helpers/config";
+
 import "./index.scss";
 
 export default function App() {
-  const [decks, setDecks] = useLocalStorageState([], "decks");
+  const [decks, setDecks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleSaveDeck(newDeck) {
     const { id } = newDeck;
@@ -25,6 +28,24 @@ export default function App() {
     updatedDecks[index] = newDeck;
     setDecks(updatedDecks);
   }
+
+  useEffect(() => {
+    async function fetchDecks() {
+      setIsLoading(true);
+      try {
+        const res = await fetch(`${DECKS_API_URL}/decks`);
+        const data = await res.json();
+
+        setDecks(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchDecks();
+  }, []);
 
   return (
     <div className="App">
