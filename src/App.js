@@ -43,6 +43,26 @@ export default function App() {
     }
   }
 
+  async function createDeck(newDeck) {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${DECKS_API_URL}/decks`, {
+        method: "POST",
+        body: JSON.stringify(newDeck),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+
+      setDecks((decks) => [...decks, data]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   async function deleteDeck(id) {
     setIsLoading(true);
     try {
@@ -79,7 +99,13 @@ export default function App() {
             <Route path="decks/:deckId" element={<Deck decks={decks} />} />
             <Route
               path="decks/new"
-              element={<DeckForm onSaveDeck={handleSaveDeck} decks={decks} />}
+              element={
+                <DeckForm
+                  onSaveDeck={handleSaveDeck}
+                  decks={decks}
+                  onCreateDeck={createDeck}
+                />
+              }
             />
             <Route
               path="decks/edit/:deckId"

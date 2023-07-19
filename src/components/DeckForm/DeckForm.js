@@ -39,7 +39,7 @@ function reducer(state, action) {
   }
 }
 
-export default function DeckForm({ decks, onSaveDeck }) {
+export default function DeckForm({ decks, onSaveDeck, onCreateDeck }) {
   const { deckId } = useParams();
   const deckToEdit = decks.find((deck) => deck.id === deckId);
   const navigate = useNavigate();
@@ -71,13 +71,13 @@ export default function DeckForm({ decks, onSaveDeck }) {
     if (!canSave) return;
 
     const newDeck = {
-      id: deckToEdit?.id || crypto.randomUUID(),
+      // id: deckToEdit?.id || crypto.randomUUID(),
       title,
       description,
       terms: fields,
     };
 
-    onSaveDeck(newDeck);
+    deckId ? onSaveDeck(newDeck) : onCreateDeck(newDeck);
     navigate(deckId ? `/app/decks/${deckId}` : "/app/decks");
   }
 
