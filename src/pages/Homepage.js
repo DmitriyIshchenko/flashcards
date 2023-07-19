@@ -4,7 +4,7 @@ function Homepage() {
   return (
     <div>
       <h1>Homepage</h1>
-      <Link to="/decks">Go to app</Link>
+      <Link to="/app">Go to app</Link>
     </div>
   );
 }
