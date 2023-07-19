@@ -35,12 +35,12 @@ function formatDescription(data, term) {
   return `${description}${examples.length ? "\n".repeat(3) : ""}${examples}`;
 }
 
-export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
+export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
   const [loadedImages, setLoadedImages] = useState([]);
   const [areImagesLoading, setAreImagesLoading] = useState(false);
   const [isImageMenuOpen, setIsImageMenuOpen] = useState(false);
 
-  const { term } = field;
+  const { term, id } = field;
 
   async function handleFetchImages() {
     if (!term) return;
@@ -71,11 +71,11 @@ export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
       const result = formatDescription(description, term);
 
       dispatch({
-        type: "fields/change",
+        type: "fields/update",
         payload: {
           field: "description",
           value: result,
-          fieldIndex,
+          id,
         },
       });
     } catch (err) {
@@ -93,18 +93,16 @@ export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
         dispatch={dispatch}
       />
 
-      <FieldContent field={field} fieldIndex={fieldIndex} dispatch={dispatch}>
+      <FieldContent field={field} dispatch={dispatch}>
         <FieldImage
           field={field}
-          fieldIndex={fieldIndex}
           handleFetchImages={handleFetchImages}
           dispatch={dispatch}
         />
       </FieldContent>
 
       <FieldImageMenu
-        term={term}
-        fieldIndex={fieldIndex}
+        field={field}
         isImageMenuOpen={isImageMenuOpen}
         setIsImageMenuOpen={setIsImageMenuOpen}
         areImagesLoading={areImagesLoading}
@@ -147,8 +145,8 @@ function FieldHeader({
   );
 }
 
-function FieldContent({ field, fieldIndex, dispatch, children }) {
-  const { term, description } = field;
+function FieldContent({ field, dispatch, children }) {
+  const { term, description, id } = field;
   const descriptionRef = useRef(null);
 
   useEffect(() => {
@@ -166,11 +164,11 @@ function FieldContent({ field, fieldIndex, dispatch, children }) {
         value={term}
         onChange={(e) =>
           dispatch({
-            type: "fields/change",
+            type: "fields/update",
             payload: {
               field: e.target.name,
               value: e.target.value,
-              fieldIndex,
+              id,
             },
           })
         }
@@ -182,11 +180,11 @@ function FieldContent({ field, fieldIndex, dispatch, children }) {
         contentEditable="true"
         onInput={(e) =>
           dispatch({
-            type: "fields/change",
+            type: "fields/update",
             payload: {
               field: "description",
               value: e.target.textContent,
-              fieldIndex,
+              id,
             },
           })
         }
@@ -200,8 +198,8 @@ function FieldContent({ field, fieldIndex, dispatch, children }) {
   );
 }
 
-function FieldImage({ field, fieldIndex, dispatch, handleFetchImages }) {
-  const { term, image } = field;
+function FieldImage({ field, dispatch, handleFetchImages }) {
+  const { term, image, id } = field;
   return (
     <div className="word__image">
       {image ? (
@@ -212,11 +210,11 @@ function FieldImage({ field, fieldIndex, dispatch, handleFetchImages }) {
             className="word__img-delete-btn"
             onClick={() =>
               dispatch({
-                type: "fields/change",
+                type: "fields/update",
                 payload: {
                   field: "image",
                   value: null,
-                  fieldIndex,
+                  id,
                 },
               })
             }
@@ -240,14 +238,15 @@ function FieldImage({ field, fieldIndex, dispatch, handleFetchImages }) {
 }
 
 function FieldImageMenu({
-  term,
-  fieldIndex,
+  field,
+
   isImageMenuOpen,
   setIsImageMenuOpen,
   areImagesLoading,
   loadedImages,
   dispatch,
 }) {
+  const { term, id } = field;
   return (
     <>
       {isImageMenuOpen && (
@@ -262,11 +261,11 @@ function FieldImageMenu({
                 key={i}
                 onClick={() => {
                   dispatch({
-                    type: "fields/change",
+                    type: "fields/update",
                     payload: {
                       field: "image",
                       value: imageURLs,
-                      fieldIndex,
+                      id,
                     },
                   });
                   setIsImageMenuOpen(false);

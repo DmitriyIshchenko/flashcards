@@ -28,10 +28,10 @@ function reducer(state, action) {
         ...state,
         fields: state.fields.filter((field) => field.id !== action.payload),
       };
-    case "fields/change":
+    case "fields/update":
       const updatedFields = [...state.fields];
-      const { field, value, fieldIndex } = action.payload;
-      updatedFields[fieldIndex][field] = value;
+      const { field, value, id } = action.payload;
+      updatedFields.find((field) => field.id === id)[field] = value;
 
       return { ...state, fields: updatedFields };
     default:
