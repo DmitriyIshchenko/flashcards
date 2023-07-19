@@ -1,12 +1,18 @@
 .word {
   display: grid;
+
+  grid-template-columns: repeat(2, 1fr) auto;
   row-gap: 2rem;
+  column-gap: 3rem;
 
   padding-top: 2rem;
   padding-inline: 4rem;
   padding-bottom: 4rem;
 
   &__header {
+    grid-column: 1/-1;
+    grid-row: 1/2;
+
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -39,10 +45,17 @@
   }
 
   &__content {
-    display: grid;
+    grid-column: 1/3;
+    grid-row: 2/3;
 
-    grid-template-columns: 1fr 1fr 10%;
+    @media screen and (max-width: 1000px) {
+      grid-column: 1/-1;
+    }
+
+    display: grid;
     gap: 3rem;
+
+    grid-template-columns: 1fr 1fr;
     align-items: start;
   }
 
@@ -90,7 +103,14 @@
     }
   }
 
-  &__images-menu {
+  &__images-output {
+    grid-column: 1/-1;
+    grid-row: 3/4;
+
+    @media screen and (max-width: 1000px) {
+      grid-row: 4/5;
+    }
+
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
@@ -119,7 +139,7 @@
 
   &__image {
     position: relative;
-    flex: 0 0 10%;
+    width: 12rem;
 
     aspect-ratio: 1;
     border-radius: 1rem;
@@ -161,6 +181,10 @@
     &:hover,
     &:active {
       color: var(--clr-accent-dark);
+    }
+
+    &:disabled {
+      color: var(--clr-grey);
     }
   }
 
