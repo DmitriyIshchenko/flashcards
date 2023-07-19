@@ -39,9 +39,26 @@ export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
   const [loadedImages, setLoadedImages] = useState([]);
   const [areImagesLoading, setAreImagesLoading] = useState(false);
   const [isImageMenuOpen, setIsImageMenuOpen] = useState(false);
-  const descriptionRef = useRef(null);
 
-  const { term, description, image } = field;
+  const { term } = field;
+
+  async function handleFetchImages() {
+    if (!term) return;
+
+    try {
+      setAreImagesLoading(true);
+      setIsImageMenuOpen(true);
+      const res = await fetch(
+        `${IMAGES_API_URL}?client_id=${IMAGES_API_KEY}&page=1&per_page=5&query=${term}`
+      );
+      const data = await res.json();
+
+      setAreImagesLoading(false);
+      setLoadedImages(data.results.map((image) => image.urls));
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   async function handleFetchWord() {
     if (!term) return;
@@ -66,23 +83,73 @@ export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
     }
   }
 
-  async function handleFetchImages() {
-    if (!term) return;
+  return (
+    <Card className="word" listItem>
+      <FieldHeader
+        field={field}
+        fieldIndex={fieldIndex}
+        handleFetchWord={handleFetchWord}
+        isOnlyItem={isOnlyItem}
+        dispatch={dispatch}
+      />
 
-    try {
-      setAreImagesLoading(true);
-      setIsImageMenuOpen(true);
-      const res = await fetch(
-        `${IMAGES_API_URL}?client_id=${IMAGES_API_KEY}&page=1&per_page=5&query=${term}`
-      );
-      const data = await res.json();
+      <FieldContent field={field} fieldIndex={fieldIndex} dispatch={dispatch}>
+        <FieldImage
+          field={field}
+          fieldIndex={fieldIndex}
+          handleFetchImages={handleFetchImages}
+          dispatch={dispatch}
+        />
+      </FieldContent>
 
-      setAreImagesLoading(false);
-      setLoadedImages(data.results.map((image) => image.urls));
-    } catch (err) {
-      console.log(err);
-    }
-  }
+      <FieldImageMenu
+        term={term}
+        fieldIndex={fieldIndex}
+        isImageMenuOpen={isImageMenuOpen}
+        setIsImageMenuOpen={setIsImageMenuOpen}
+        areImagesLoading={areImagesLoading}
+        loadedImages={loadedImages}
+        dispatch={dispatch}
+      />
+    </Card>
+  );
+}
+
+function FieldHeader({
+  field,
+  fieldIndex,
+  handleFetchWord,
+  isOnlyItem,
+  dispatch,
+}) {
+  return (
+    <header className="word__header">
+      <span className="word__number">{fieldIndex + 1}</span>
+      <Button
+        round
+        type="button"
+        title="Get description from Merriam-Webster"
+        className="word__search-btn"
+        onClick={handleFetchWord}
+      >
+        <TbWorldSearch />
+      </Button>
+      <Button
+        round
+        type="button"
+        className="word__delete-btn"
+        onClick={() => dispatch({ type: "fields/delete", payload: field.id })}
+        disabled={isOnlyItem}
+      >
+        <BsFillTrashFill />
+      </Button>
+    </header>
+  );
+}
+
+function FieldContent({ field, fieldIndex, dispatch, children }) {
+  const { term, description } = field;
+  const descriptionRef = useRef(null);
 
   useEffect(() => {
     // manually update contenteditable div
@@ -90,102 +157,99 @@ export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
   }, [description, descriptionRef]);
 
   return (
-    <Card className="word" listItem>
-      <header className="word__header">
-        <span className="word__number">{fieldIndex + 1}</span>
-        <Button
-          round
+    <div className="word__content">
+      <input
+        className="word__term"
+        name="term"
+        type="text"
+        placeholder="Term"
+        value={term}
+        onChange={(e) =>
+          dispatch({
+            type: "fields/change",
+            payload: {
+              field: e.target.name,
+              value: e.target.value,
+              fieldIndex,
+            },
+          })
+        }
+        required
+      />
+
+      <div
+        className="word__description"
+        contentEditable="true"
+        onInput={(e) =>
+          dispatch({
+            type: "fields/change",
+            payload: {
+              field: "description",
+              value: e.target.textContent,
+              fieldIndex,
+            },
+          })
+        }
+        suppressContentEditableWarning={true}
+        ref={descriptionRef}
+        data-placeholder="Description"
+      ></div>
+
+      {children}
+    </div>
+  );
+}
+
+function FieldImage({ field, fieldIndex, dispatch, handleFetchImages }) {
+  const { term, image } = field;
+  return (
+    <div className="word__image">
+      {image ? (
+        <>
+          <Button
+            round
+            type="button"
+            className="word__img-delete-btn"
+            onClick={() =>
+              dispatch({
+                type: "fields/change",
+                payload: {
+                  field: "image",
+                  value: null,
+                  fieldIndex,
+                },
+              })
+            }
+          >
+            &times;
+          </Button>
+          <img src={image.thumb} alt={term} />
+        </>
+      ) : (
+        <button
+          onClick={handleFetchImages}
           type="button"
-          title="Get description from Merriam-Webster"
-          className="word__search-btn"
-          onClick={handleFetchWord}
+          className="word__img-add-btn"
         >
-          <TbWorldSearch />
-        </Button>
-        <Button
-          round
-          type="button"
-          className="word__delete-btn"
-          onClick={() => dispatch({ type: "fields/delete", payload: field.id })}
-          disabled={isOnlyItem}
-        >
-          <BsFillTrashFill />
-        </Button>
-      </header>
+          <BiSolidImageAdd size={"4rem"} />
+          <span>Image</span>
+        </button>
+      )}
+    </div>
+  );
+}
 
-      <div className="word__content">
-        <input
-          className="word__term"
-          name="term"
-          type="text"
-          placeholder="Term"
-          value={term}
-          onChange={(e) =>
-            dispatch({
-              type: "fields/change",
-              payload: {
-                field: e.target.name,
-                value: e.target.value,
-                fieldIndex,
-              },
-            })
-          }
-          required
-        />
-
-        <div
-          className="word__description"
-          contentEditable="true"
-          onInput={(e) =>
-            dispatch({
-              type: "fields/change",
-              payload: {
-                field: "description",
-                value: e.target.textContent,
-                fieldIndex,
-              },
-            })
-          }
-          suppressContentEditableWarning={true}
-          ref={descriptionRef}
-          data-placeholder="Description"
-        ></div>
-
-        <div className="word__image">
-          {image ? (
-            <>
-              <Button
-                round
-                type="button"
-                className="word__img-delete-btn"
-                onClick={() =>
-                  dispatch({
-                    type: "fields/change",
-                    payload: {
-                      field: "image",
-                      value: "",
-                      fieldIndex,
-                    },
-                  })
-                }
-              >
-                &times;
-              </Button>
-              <img src={image.thumb} alt={term} />
-            </>
-          ) : (
-            <button
-              onClick={handleFetchImages}
-              type="button"
-              className="word__img-add-btn"
-            >
-              <BiSolidImageAdd size={"4rem"} />
-              <span>Image</span>
-            </button>
-          )}
-        </div>
-      </div>
-
+function FieldImageMenu({
+  term,
+  fieldIndex,
+  isImageMenuOpen,
+  setIsImageMenuOpen,
+  areImagesLoading,
+  loadedImages,
+  dispatch,
+}) {
+  return (
+    <>
       {isImageMenuOpen && (
         <div className="word__images-menu">
           {areImagesLoading ? (
@@ -212,6 +276,6 @@ export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
           )}
         </div>
       )}
-    </Card>
+    </>
   );
 }
