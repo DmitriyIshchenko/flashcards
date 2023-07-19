@@ -17,18 +17,6 @@ export default function App() {
   const [decks, setDecks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleSaveDeck(newDeck) {
-    const { id } = newDeck;
-    const updatedDecks = [...decks];
-
-    const index = updatedDecks.findIndex((deck) => deck.id === id);
-    if (index === -1)
-      return setDecks((currentDecks) => [...currentDecks, newDeck]);
-
-    updatedDecks[index] = newDeck;
-    setDecks(updatedDecks);
-  }
-
   async function fetchDecks() {
     setIsLoading(true);
     try {
@@ -80,6 +68,31 @@ export default function App() {
     }
   }
 
+  async function updateDeck(updatedDeck, id) {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${DECKS_API_URL}/decks/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(updatedDeck),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      setDecks((decks) => {
+        const updatedDecks = [...decks];
+        const index = updatedDecks.findIndex((deck) => deck.id === data.id);
+
+        updatedDecks[index] = data;
+        return updatedDecks;
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     fetchDecks();
   }, []);
@@ -99,17 +112,11 @@ export default function App() {
             <Route path="decks/:deckId" element={<Deck decks={decks} />} />
             <Route
               path="decks/new"
-              element={
-                <DeckForm
-                  onSaveDeck={handleSaveDeck}
-                  decks={decks}
-                  onCreateDeck={createDeck}
-                />
-              }
+              element={<DeckForm decks={decks} onCreateDeck={createDeck} />}
             />
             <Route
               path="decks/edit/:deckId"
-              element={<DeckForm onSaveDeck={handleSaveDeck} decks={decks} />}
+              element={<DeckForm decks={decks} onUpdateDeck={updateDeck} />}
             />
           </Route>
           <Route path="*" element={<PageNotFound />} />
