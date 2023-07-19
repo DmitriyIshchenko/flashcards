@@ -16,9 +16,9 @@ import { formatDescription } from "../../helpers/formatDescription";
 import "./TermInput.scss";
 
 export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
-  const [loadedImages, setLoadedImages] = useState([]);
-  const [areImagesLoading, setAreImagesLoading] = useState(false);
-  const [isImageMenuOpen, setIsImageMenuOpen] = useState(false);
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { term, id } = field;
 
@@ -26,15 +26,15 @@ export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
     if (!term) return;
 
     try {
-      setAreImagesLoading(true);
-      setIsImageMenuOpen(true);
+      setIsLoading(true);
+      setIsMenuOpen(true);
       const res = await fetch(
         `${IMAGES_API_URL}?client_id=${IMAGES_API_KEY}&page=1&per_page=5&query=${term}`
       );
       const data = await res.json();
 
-      setAreImagesLoading(false);
-      setLoadedImages(data.results.map((image) => image.urls));
+      setIsLoading(false);
+      setImages(data.results.map((image) => image.urls));
     } catch (err) {
       console.log(err);
     }
@@ -83,10 +83,10 @@ export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
 
       <FieldImageMenu
         field={field}
-        isImageMenuOpen={isImageMenuOpen}
-        setIsImageMenuOpen={setIsImageMenuOpen}
-        areImagesLoading={areImagesLoading}
-        loadedImages={loadedImages}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        isLoading={isLoading}
+        images={images}
         dispatch={dispatch}
       />
     </Card>
@@ -219,42 +219,39 @@ function FieldImage({ field, dispatch, handleFetchImages }) {
 
 function FieldImageMenu({
   field,
-
-  isImageMenuOpen,
-  setIsImageMenuOpen,
-  areImagesLoading,
-  loadedImages,
+  isMenuOpen,
+  setIsMenuOpen,
+  isLoading,
+  images,
   dispatch,
 }) {
   const { term, id } = field;
+  if (!isMenuOpen) return null;
+
   return (
-    <>
-      {isImageMenuOpen && (
-        <div className="word__images-menu">
-          {areImagesLoading ? (
-            <p className="word__images-menu-loader">Loading...</p>
-          ) : (
-            loadedImages.map((imageURLs, i) => (
-              <img
-                src={imageURLs.small}
-                alt={term}
-                key={i}
-                onClick={() => {
-                  dispatch({
-                    type: "fields/update",
-                    payload: {
-                      field: "image",
-                      value: imageURLs,
-                      id,
-                    },
-                  });
-                  setIsImageMenuOpen(false);
-                }}
-              />
-            ))
-          )}
-        </div>
+    <div className="word__images-menu">
+      {isLoading ? (
+        <p className="word__images-menu-loader">Loading...</p>
+      ) : (
+        images.map((imageURLs, i) => (
+          <img
+            src={imageURLs.small}
+            alt={term}
+            key={i}
+            onClick={() => {
+              dispatch({
+                type: "fields/update",
+                payload: {
+                  field: "image",
+                  value: imageURLs,
+                  id,
+                },
+              });
+              setIsMenuOpen(false);
+            }}
+          />
+        ))
       )}
-    </>
+    </div>
   );
 }
