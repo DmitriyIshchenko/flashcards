@@ -57,14 +57,18 @@ export default function DeckForm({ decks, onSaveDeck }) {
 
   const prevFields = usePrevious(fields);
 
-  const canSave = !!(
+  // no empty descriptions
+  const canSave =
     title &&
     description &&
-    Object.values(fields[0]).every((value) => value)
-  );
+    Object.values(fields)
+      .map((field) => field.description)
+      .every((description) => description);
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (!canSave) return;
 
     const newDeck = {
       id: deckToEdit?.id || crypto.randomUUID(),
