@@ -111,12 +111,14 @@ export default function App() {
             />
             <Route path="decks/:deckId" element={<Deck decks={decks} />} />
             <Route
-              path="decks/new"
-              element={<DeckForm decks={decks} onCreateDeck={createDeck} />}
-            />
-            <Route
-              path="decks/edit/:deckId"
-              element={<DeckForm decks={decks} onUpdateDeck={updateDeck} />}
+              path="form/:deckId?"
+              element={
+                <DeckForm
+                  decks={decks}
+                  onCreateDeck={createDeck}
+                  onUpdateDeck={updateDeck}
+                />
+              }
             />
           </Route>
           <Route path="*" element={<PageNotFound />} />

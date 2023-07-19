@@ -14,7 +14,7 @@ export default function DecksList({ decks, onDeleteDeck }) {
           <DeckCard key={deck.id} deck={deck} onDeleteDeck={onDeleteDeck} />
         ))}
       </ul>
-      <Link to="new" className="decks__add-btn">
+      <Link to="/app/form" className="decks__add-btn">
         <BsPlus />
       </Link>
     </div>
@@ -42,7 +42,7 @@ function DeckCard({ deck, onDeleteDeck }) {
           </Button>
         )}
         menu={[
-          <Link to={`edit/${id}`} className="dropdown__btn">
+          <Link to={`/app/form/${id}`} className="dropdown__btn">
             Edit
           </Link>,
           <button
