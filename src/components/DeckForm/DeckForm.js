@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import TermInput from "./TermInput";
@@ -8,49 +8,60 @@ import { usePrevious } from "../../hooks/usePrevious";
 
 import "./DeckForm.scss";
 
+function getEmptyField() {
+  return { term: "", description: "", image: null, id: crypto.randomUUID() };
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "setTitle":
+      return { ...state, title: action.payload };
+    case "setDescription":
+      return { ...state, description: action.payload };
+    case "fields/add":
+      return {
+        ...state,
+        fields: [...state.fields, getEmptyField()],
+      };
+    case "fields/delete":
+      return {
+        ...state,
+        fields: state.fields.filter((field) => field.id !== action.payload),
+      };
+    case "fields/change":
+      const updatedFields = [...state.fields];
+      const { field, value, index } = action.payload;
+      updatedFields[index][field] = value;
+
+      return { ...state, fields: updatedFields };
+    default:
+      throw new Error("Unknown action type");
+  }
+}
+
 export default function DeckForm({ decks, onSaveDeck }) {
   const { deckId } = useParams();
   const deckToEdit = decks.find((deck) => deck.id === deckId);
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState(() => deckToEdit?.title || "");
-  const [description, setDescription] = useState(
-    () => deckToEdit?.description || ""
+  const initialState = {
+    title: deckToEdit?.title || "",
+    description: deckToEdit?.description || "",
+    fields: deckToEdit?.terms || [getEmptyField()],
+  };
+
+  const [{ title, description, fields }, dispatch] = useReducer(
+    reducer,
+    initialState
   );
-  const [termInputFields, setTermInputFields] = useState(() => {
-    return (
-      deckToEdit?.terms || [
-        { term: "", description: "", id: crypto.randomUUID() },
-      ]
-    );
-  });
-  const prevTermInputFields = usePrevious(termInputFields);
+
+  const prevFields = usePrevious(fields);
 
   const canSave = !!(
     title &&
     description &&
-    Object.values(termInputFields[0]).every((value) => value)
+    Object.values(fields[0]).every((value) => value)
   );
-
-  function handleFieldChange(key, value, index) {
-    const data = [...termInputFields];
-
-    data[index][key] = value;
-
-    setTermInputFields(data);
-  }
-
-  function handleAddField() {
-    const newField = { term: "", description: "", id: crypto.randomUUID() };
-
-    setTermInputFields((currentFields) => [...currentFields, newField]);
-  }
-
-  function handleDeleteField(index) {
-    const data = [...termInputFields];
-    data.splice(index, 1);
-    setTermInputFields(data);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -59,7 +70,7 @@ export default function DeckForm({ decks, onSaveDeck }) {
       id: deckToEdit?.id || crypto.randomUUID(),
       title,
       description,
-      terms: termInputFields,
+      terms: fields,
     };
 
     onSaveDeck(newDeck);
@@ -67,38 +78,26 @@ export default function DeckForm({ decks, onSaveDeck }) {
   }
 
   useEffect(() => {
-    if (termInputFields.length <= prevTermInputFields?.length || deckToEdit)
-      return;
+    if (fields.length <= prevFields?.length || deckToEdit) return;
 
     window.scrollTo(0, document.body.scrollHeight);
-  }, [termInputFields, prevTermInputFields, deckToEdit]);
+  }, [fields, prevFields, deckToEdit]);
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <FormHeader
-        title={title}
-        setTitle={setTitle}
-        description={description}
-        setDescription={setDescription}
-      >
+      <FormHeader title={title} description={description} dispatch={dispatch}>
         <FormControls deckId={deckId} canSave={canSave} />
-        <FormInfo
-          title={title}
-          setTitle={setTitle}
-          description={description}
-          setDescription={setDescription}
-        />
+        <FormInfo title={title} description={description} dispatch={dispatch} />
       </FormHeader>
 
       <FormFields>
-        {termInputFields.map((field, index) => (
+        {fields.map((field, index) => (
           <TermInput
             key={field.id}
-            index={index}
             field={field}
-            onFieldChange={handleFieldChange}
-            onDeleteField={handleDeleteField}
-            isOnlyItem={termInputFields.length === 1}
+            fieldIndex={index}
+            dispatch={dispatch}
+            isOnlyItem={fields.length === 1}
           />
         ))}
       </FormFields>
@@ -115,7 +114,7 @@ export default function DeckForm({ decks, onSaveDeck }) {
         round
         className="form__add-btn"
         type="button"
-        onClick={handleAddField}
+        onClick={() => dispatch({ type: "fields/add" })}
       >
         <BsPlus />
       </Button>
@@ -150,7 +149,7 @@ function FormControls({ deckId, canSave }) {
   );
 }
 
-function FormInfo({ title, setTitle, description, setDescription }) {
+function FormInfo({ title, description, dispatch }) {
   return (
     <div className="form__info">
       <label htmlFor="title" className="form__label">
@@ -161,7 +160,9 @@ function FormInfo({ title, setTitle, description, setDescription }) {
           className="form__input"
           placeholder="Enter a title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) =>
+            dispatch({ type: "setTitle", payload: e.target.value })
+          }
           required
         />
       </label>
@@ -174,7 +175,9 @@ function FormInfo({ title, setTitle, description, setDescription }) {
           className="form__input"
           placeholder="Complete a description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) =>
+            dispatch({ type: "setDescription", payload: e.target.value })
+          }
           required
         />
       </label>

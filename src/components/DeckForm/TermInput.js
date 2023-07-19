@@ -35,25 +35,13 @@ function formatDescription(data, term) {
   return `${description}${examples.length ? "\n".repeat(3) : ""}${examples}`;
 }
 
-export default function TermInput({
-  index,
-  field,
-  onFieldChange,
-  onDeleteField,
-  isOnlyItem,
-}) {
+export default function TermInput({ fieldIndex, field, isOnlyItem, dispatch }) {
   const [loadedImages, setLoadedImages] = useState([]);
   const [areImagesLoading, setAreImagesLoading] = useState(false);
   const [isImageMenuOpen, setIsImageMenuOpen] = useState(false);
   const descriptionRef = useRef(null);
 
   const { term, description, image } = field;
-
-  function handleChange(key, value) {
-    onFieldChange(key, value, index);
-
-    if (key !== "description") return;
-  }
 
   async function handleFetchWord() {
     if (!term) return;
@@ -65,9 +53,15 @@ export default function TermInput({
       const description = data.find((entry) => entry.def);
       const result = formatDescription(description, term);
 
-      handleChange("description", result);
+      dispatch({
+        type: "fields/change",
+        payload: {
+          field: "description",
+          value: result,
+          fieldIndex,
+        },
+      });
     } catch (err) {
-      handleChange("description", "");
       console.log(err);
     }
   }
@@ -98,7 +92,7 @@ export default function TermInput({
   return (
     <Card className="word" listItem>
       <header className="word__header">
-        <span className="word__number">{index + 1}</span>
+        <span className="word__number">{fieldIndex + 1}</span>
         <Button
           round
           type="button"
@@ -112,7 +106,7 @@ export default function TermInput({
           round
           type="button"
           className="word__delete-btn"
-          onClick={() => onDeleteField(index)}
+          onClick={() => dispatch({ type: "fields/delete", payload: field.id })}
           disabled={isOnlyItem}
         >
           <BsFillTrashFill />
@@ -126,15 +120,32 @@ export default function TermInput({
           type="text"
           placeholder="Term"
           value={term}
-          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          onChange={(e) =>
+            dispatch({
+              type: "fields/change",
+              payload: {
+                field: e.target.name,
+                value: e.target.value,
+                fieldIndex,
+              },
+            })
+          }
           required
         />
 
         <div
           className="word__description"
           contentEditable="true"
-          name="q"
-          onInput={(e) => handleChange("description", e.target.textContent)}
+          onInput={(e) =>
+            dispatch({
+              type: "fields/change",
+              payload: {
+                field: "description",
+                value: e.target.textContent,
+                fieldIndex,
+              },
+            })
+          }
           suppressContentEditableWarning={true}
           ref={descriptionRef}
           data-placeholder="Description"
@@ -147,7 +158,16 @@ export default function TermInput({
                 round
                 type="button"
                 className="word__img-delete-btn"
-                onClick={() => handleChange("image", "")}
+                onClick={() =>
+                  dispatch({
+                    type: "fields/change",
+                    payload: {
+                      field: "image",
+                      value: "",
+                      fieldIndex,
+                    },
+                  })
+                }
               >
                 &times;
               </Button>
@@ -171,13 +191,20 @@ export default function TermInput({
           {areImagesLoading ? (
             <p className="word__images-menu-loader">Loading...</p>
           ) : (
-            loadedImages.map((imageURLs, index) => (
+            loadedImages.map((imageURLs, i) => (
               <img
                 src={imageURLs.small}
                 alt={term}
-                key={index}
+                key={i}
                 onClick={() => {
-                  handleChange("image", imageURLs);
+                  dispatch({
+                    type: "fields/change",
+                    payload: {
+                      field: "image",
+                      value: imageURLs,
+                      fieldIndex,
+                    },
+                  });
                   setIsImageMenuOpen(false);
                 }}
               />
