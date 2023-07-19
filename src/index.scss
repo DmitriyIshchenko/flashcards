@@ -21,6 +21,11 @@ svg {
   pointer-events: none;
 }
 
+a {
+  text-decoration: none;
+  color: var(--clr-black);
+}
+
 :root {
   --clr-accent: #50d2c2;
   --clr-accent-dark: #48bdaf;

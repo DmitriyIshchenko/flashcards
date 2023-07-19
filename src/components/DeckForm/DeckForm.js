@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
 import { TermInput } from "./TermInput";
 import Button from "../UI/Buttons/Button";
 import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
 import { usePrevious } from "../../hooks/usePrevious";
 
 import "./DeckForm.scss";
-export default function DeckForm({ onSaveDeck, deckToEdit }) {
+
+export default function DeckForm({ decks, onSaveDeck }) {
+  const { deckId } = useParams();
+  const deckToEdit = decks.find((deck) => deck.id === deckId);
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState(() => deckToEdit?.title || "");
   const [description, setDescription] = useState(
     () => deckToEdit?.description || ""
@@ -56,6 +63,7 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
     };
 
     onSaveDeck(newDeck);
+    navigate(deckId ? `/app/decks/${deckId}` : "/app/decks");
   }
 
   useEffect(() => {
@@ -70,7 +78,11 @@ export default function DeckForm({ onSaveDeck, deckToEdit }) {
       <header className="form__header">
         <div className="form__controls">
           {deckToEdit && (
-            <Button round className="form__back-btn">
+            <Button
+              round
+              className="form__back-btn"
+              onClick={() => navigate(-1)}
+            >
               <BsArrowLeftShort />
             </Button>
           )}
