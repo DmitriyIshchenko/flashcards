@@ -1,44 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import FieldImageMenu from "./FieldImageMenu";
 import Button from "../UI/Buttons/Button";
 import Card from "../UI/Card/Card";
-import { BiSolidImageAdd } from "react-icons/bi";
+
 import { TbWorldSearch } from "react-icons/tb";
 import { BsFillTrashFill } from "react-icons/bs";
 
-import {
-  WORDS_API_URL,
-  WORDS_API_KEY,
-  IMAGES_API_URL,
-  IMAGES_API_KEY,
-} from "../../helpers/config";
+import { WORDS_API_URL, WORDS_API_KEY } from "../../helpers/config";
 import { formatDescription } from "../../helpers/formatDescription";
 
 import "./TermInput.scss";
 
 export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const { term, id } = field;
-
-  async function handleFetchImages() {
-    if (!term) return;
-
-    try {
-      setIsLoading(true);
-      setIsMenuOpen(true);
-      const res = await fetch(
-        `${IMAGES_API_URL}?client_id=${IMAGES_API_KEY}&page=1&per_page=5&query=${term}`
-      );
-      const data = await res.json();
-
-      setIsLoading(false);
-      setImages(data.results.map((image) => image.urls));
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   async function handleFetchWord() {
     if (!term) return;
@@ -73,22 +47,9 @@ export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
         dispatch={dispatch}
       />
 
-      <FieldContent field={field} dispatch={dispatch}>
-        <FieldImage
-          field={field}
-          handleFetchImages={handleFetchImages}
-          dispatch={dispatch}
-        />
-      </FieldContent>
+      <FieldContent field={field} dispatch={dispatch} />
 
-      <FieldImageMenu
-        field={field}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        isLoading={isLoading}
-        images={images}
-        dispatch={dispatch}
-      />
+      <FieldImageMenu field={field} dispatch={dispatch} />
     </Card>
   );
 }
@@ -125,7 +86,7 @@ function FieldHeader({
   );
 }
 
-function FieldContent({ field, dispatch, children }) {
+function FieldContent({ field, dispatch }) {
   const { term, description, id } = field;
   const descriptionRef = useRef(null);
 
@@ -172,86 +133,6 @@ function FieldContent({ field, dispatch, children }) {
         ref={descriptionRef}
         data-placeholder="Description"
       ></div>
-
-      {children}
-    </div>
-  );
-}
-
-function FieldImage({ field, dispatch, handleFetchImages }) {
-  const { term, image, id } = field;
-  return (
-    <div className="word__image">
-      {image ? (
-        <>
-          <Button
-            round
-            type="button"
-            className="word__img-delete-btn"
-            onClick={() =>
-              dispatch({
-                type: "fields/update",
-                payload: {
-                  field: "image",
-                  value: null,
-                  id,
-                },
-              })
-            }
-          >
-            &times;
-          </Button>
-          <img src={image.thumb} alt={term} />
-        </>
-      ) : (
-        <button
-          onClick={handleFetchImages}
-          type="button"
-          className="word__img-add-btn"
-        >
-          <BiSolidImageAdd size={"4rem"} />
-          <span>Image</span>
-        </button>
-      )}
-    </div>
-  );
-}
-
-function FieldImageMenu({
-  field,
-  isMenuOpen,
-  setIsMenuOpen,
-  isLoading,
-  images,
-  dispatch,
-}) {
-  const { term, id } = field;
-  if (!isMenuOpen) return null;
-
-  return (
-    <div className="word__images-menu">
-      {isLoading ? (
-        <p className="word__images-menu-loader">Loading...</p>
-      ) : (
-        images.map((imageURLs, i) => (
-          <img
-            src={imageURLs.small}
-            alt={term}
-            key={i}
-            onClick={() => {
-              dispatch({
-                type: "fields/update",
-                payload: {
-                  field: "image",
-                  value: imageURLs,
-                  id,
-                },
-              });
-              setIsMenuOpen(false);
-            }}
-          />
-        ))
-      )}
     </div>
   );
 }
