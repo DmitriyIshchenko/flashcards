@@ -30,12 +30,13 @@ function reducer(state, action) {
         ...state,
         fields: state.fields.filter((field) => field.id !== action.payload),
       };
-    case "fields/update":
+    case "fields/update": {
       const updatedFields = [...state.fields];
       const { field, value, id } = action.payload;
       updatedFields.find((field) => field.id === id)[field] = value;
 
       return { ...state, fields: updatedFields };
+    }
     default:
       throw new Error("Unknown action type");
   }
