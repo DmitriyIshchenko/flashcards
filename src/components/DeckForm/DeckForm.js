@@ -50,7 +50,7 @@ export default function DeckForm() {
   const initialState = {
     title: deckToEdit?.title || "",
     description: deckToEdit?.description || "",
-    fields: deckToEdit?.terms || [getEmptyField()],
+    fields: structuredClone(deckToEdit?.terms) || [getEmptyField()],
   };
 
   const [{ title, description, fields }, dispatch] = useReducer(
