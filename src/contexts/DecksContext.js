@@ -1,32 +1,74 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import { createContext } from "react";
 
 import { DECKS_API_URL } from "../helpers/config";
 const DecksContext = createContext();
 
+const initialState = {
+  decks: [],
+  isLoading: false,
+  error: "",
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "loading":
+      return { ...state, isLoading: true };
+    case "decks/loaded":
+      return { ...state, isLoading: false, decks: action.payload };
+    case "deck/created":
+      return {
+        ...state,
+        isLoading: false,
+        decks: [...state.decks, action.payload],
+      };
+    case "deck/updated":
+      const updatedDecks = [...state.decks];
+      const index = updatedDecks.findIndex(
+        (deck) => deck.id === action.payload.id
+      );
+
+      updatedDecks[index] = action.payload;
+      return { ...state, isLoading: false, decks: updatedDecks };
+    case "deck/deleted":
+      return {
+        ...state,
+        isLoading: false,
+        decks: state.decks.filter((deck) => deck.id !== action.payload),
+      };
+    case "rejected":
+      return { ...state, isLoading: false, error: action.payload };
+    default:
+      throw new Error("Unknown action type");
+  }
+}
+
 function DecksProvider({ children }) {
-  const [decks, setDecks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [{ decks, isLoading, error }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   useEffect(() => {
     async function fetchDecks() {
-      setIsLoading(true);
+      dispatch({ type: "loading" });
       try {
         const res = await fetch(`${DECKS_API_URL}/decks`);
         const data = await res.json();
 
-        setDecks(data);
+        dispatch({ type: "decks/loaded", payload: data });
       } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
+        dispatch({
+          type: "rejected",
+          payload: "There was an error fetching decks.",
+        });
       }
     }
     fetchDecks();
   }, []);
 
   async function createDeck(newDeck) {
-    setIsLoading(true);
+    dispatch({ type: "loading" });
     try {
       const res = await fetch(`${DECKS_API_URL}/decks`, {
         method: "POST",
@@ -37,33 +79,35 @@ function DecksProvider({ children }) {
       });
       const data = await res.json();
 
-      setDecks((decks) => [...decks, data]);
+      dispatch({ type: "deck/created", payload: data });
     } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error creating the deck.",
+      });
     }
   }
 
   async function deleteDeck(id) {
-    setIsLoading(true);
+    dispatch({ type: "loading" });
     try {
-      setDecks((decks) => decks.filter((deck) => deck.id !== id));
       await fetch(`${DECKS_API_URL}/decks/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
+      dispatch({ type: "deck/deleted", payload: id });
     } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error deleting the deck.",
+      });
     }
   }
 
   async function updateDeck(updatedDeck, id) {
-    setIsLoading(true);
+    dispatch({ type: "loading" });
     try {
       const res = await fetch(`${DECKS_API_URL}/decks/${id}`, {
         method: "PATCH",
@@ -73,17 +117,13 @@ function DecksProvider({ children }) {
         },
       });
       const data = await res.json();
-      setDecks((decks) => {
-        const updatedDecks = [...decks];
-        const index = updatedDecks.findIndex((deck) => deck.id === data.id);
 
-        updatedDecks[index] = data;
-        return updatedDecks;
-      });
+      dispatch({ type: "deck/updated", payload: data });
     } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error updating the deck.",
+      });
     }
   }
   return (
@@ -91,6 +131,7 @@ function DecksProvider({ children }) {
       value={{
         decks,
         isLoading,
+        error,
         createDeck,
         deleteDeck,
         updateDeck,
