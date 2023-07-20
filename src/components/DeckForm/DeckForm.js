@@ -1,10 +1,11 @@
 import { useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
 
 import TermInput from "./TermInput";
 import Button from "../UI/Buttons/Button";
-import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
 import { usePrevious } from "../../hooks/usePrevious";
+import { useDecks } from "../../contexts/DecksContext";
 
 import "./DeckForm.scss";
 
@@ -39,7 +40,8 @@ function reducer(state, action) {
   }
 }
 
-export default function DeckForm({ decks, onCreateDeck, onUpdateDeck }) {
+export default function DeckForm() {
+  const { decks, createDeck, updateDeck } = useDecks();
   const { deckId } = useParams();
   const deckToEdit = decks.find((deck) => deck.id === deckId);
   const navigate = useNavigate();
@@ -76,7 +78,7 @@ export default function DeckForm({ decks, onCreateDeck, onUpdateDeck }) {
       terms: fields,
     };
 
-    deckId ? onUpdateDeck(newDeck, deckId) : onCreateDeck(newDeck);
+    deckId ? updateDeck(newDeck, deckId) : createDeck(newDeck);
     navigate(deckId ? `/app/decks/${deckId}` : "/app/decks");
   }
 

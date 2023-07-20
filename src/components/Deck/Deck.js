@@ -4,7 +4,10 @@ import PageNotFound from "../../pages/PageNotFound";
 import Carousel from "../UI/Carousel/Carousel";
 import FlashCard from "./FlashCard";
 
-function Deck({ decks }) {
+import { useDecks } from "../../contexts/DecksContext";
+
+function Deck() {
+  const { decks } = useDecks();
   const { deckId } = useParams();
 
   const [isFlipped, setIsFlipped] = useState(false);
