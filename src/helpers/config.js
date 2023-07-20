@@ -5,5 +5,4 @@ export const WORDS_API_URL =
 export const WORDS_API_KEY = "662bbdcb-bbc5-4cb9-beb1-710821e95385";
 
 // temp
-
-export const DECKS_API_URL = `${document.location.protocol}//${document.location.hostname}:8000`;
+export const DECKS_API_URL = `http://localhost:8000`;
