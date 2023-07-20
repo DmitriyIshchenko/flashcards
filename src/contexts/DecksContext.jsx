@@ -22,7 +22,7 @@ function reducer(state, action) {
         isLoading: false,
         decks: [...state.decks, action.payload],
       };
-    case "deck/updated":
+    case "deck/updated": {
       const updatedDecks = [...state.decks];
       const index = updatedDecks.findIndex(
         (deck) => deck.id === action.payload.id
@@ -30,6 +30,7 @@ function reducer(state, action) {
 
       updatedDecks[index] = action.payload;
       return { ...state, isLoading: false, decks: updatedDecks };
+    }
     case "deck/deleted":
       return {
         ...state,

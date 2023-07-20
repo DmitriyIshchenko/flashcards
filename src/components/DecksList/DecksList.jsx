@@ -57,12 +57,17 @@ function DeckCard({ deck }) {
           </Button>
         )}
         menu={[
-          <Link to={`/app/form/${id}`} className="dropdown__btn">
+          <Link
+            to={`/app/form/${id}`}
+            className="dropdown__btn"
+            key="edit-link"
+          >
             Edit
           </Link>,
           <button
             className="dropdown__btn dropdown__btn--delete"
             onClick={() => deleteDeck(id)}
+            key="delete-btn"
           >
             Delete
           </button>,
