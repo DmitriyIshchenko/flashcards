@@ -6,6 +6,15 @@
   margin: 0 auto;
   margin-block: 4rem;
 
+  &.loading {
+    opacity: 0.3;
+  }
+
+  &.loading button,
+  &.loading a {
+    pointer-events: none;
+  }
+
   &__header {
     display: grid;
     gap: 3rem;
