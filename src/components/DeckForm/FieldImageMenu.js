@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BiSolidImageAdd } from "react-icons/bi";
 
 import Button from "../UI/Buttons/Button";
+import Spinner from "../UI/Spinner/Spinner";
 import { IMAGES_API_URL, IMAGES_API_KEY } from "../../helpers/config";
 
 export default function FieldImageMenu({ field, dispatch }) {
@@ -102,7 +103,10 @@ function FieldImageOutput({
   return (
     <div className="word__images-output">
       {isLoading ? (
-        <p className="word__images-output-loader">Loading...</p>
+        <div className="word__images-output-loader">
+          <Spinner />
+          <span>Loading images...</span>
+        </div>
       ) : (
         images.map((imageURLs, i) => (
           <img

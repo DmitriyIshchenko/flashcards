@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { TbWorldSearch } from "react-icons/tb";
+import { BsFillTrashFill } from "react-icons/bs";
+
 import FieldImageMenu from "./FieldImageMenu";
 import Button from "../UI/Buttons/Button";
 import Card from "../UI/Card/Card";
-
-import { TbWorldSearch } from "react-icons/tb";
-import { BsFillTrashFill } from "react-icons/bs";
+import Spinner from "../UI/Spinner/Spinner";
 
 import { WORDS_API_URL, WORDS_API_KEY } from "../../helpers/config";
 import { formatDescription } from "../../helpers/formatDescription";
@@ -13,9 +14,11 @@ import "./TermInput.scss";
 
 export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
   const { term, id } = field;
+  const [isDescriptionLoading, setIsDescriptionLoading] = useState(false);
 
   async function handleFetchWord() {
     if (!term) return;
+    setIsDescriptionLoading(true);
 
     try {
       const res = await fetch(`${WORDS_API_URL}${term}?key=${WORDS_API_KEY}`);
@@ -32,8 +35,9 @@ export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
           id,
         },
       });
+      setIsDescriptionLoading(false);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -47,7 +51,11 @@ export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
         dispatch={dispatch}
       />
 
-      <FieldContent field={field} dispatch={dispatch} />
+      <FieldContent
+        field={field}
+        dispatch={dispatch}
+        isDescriptionLoading={isDescriptionLoading}
+      />
 
       <FieldImageMenu field={field} dispatch={dispatch} />
     </Card>
@@ -86,7 +94,7 @@ function FieldHeader({
   );
 }
 
-function FieldContent({ field, dispatch }) {
+function FieldContent({ field, isDescriptionLoading, dispatch }) {
   const { term, description, id } = field;
   const descriptionRef = useRef(null);
 
@@ -116,23 +124,31 @@ function FieldContent({ field, dispatch }) {
         required
       />
 
-      <div
-        className="word__description"
-        contentEditable="true"
-        onInput={(e) =>
-          dispatch({
-            type: "fields/update",
-            payload: {
-              field: "description",
-              value: e.target.textContent,
-              id,
-            },
-          })
-        }
-        suppressContentEditableWarning={true}
-        ref={descriptionRef}
-        data-placeholder="Description"
-      ></div>
+      <div className="word__description">
+        <div
+          className="word__description-text"
+          contentEditable="true"
+          onInput={(e) =>
+            dispatch({
+              type: "fields/update",
+              payload: {
+                field: "description",
+                value: e.target.textContent,
+                id,
+              },
+            })
+          }
+          suppressContentEditableWarning={true}
+          ref={descriptionRef}
+          data-placeholder="Description"
+        ></div>
+        {isDescriptionLoading && (
+          <div className="word__description-loader">
+            <Spinner />
+            <span>Fetching description...</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

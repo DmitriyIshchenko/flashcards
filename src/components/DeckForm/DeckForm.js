@@ -4,6 +4,7 @@ import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
 
 import TermInput from "./TermInput";
 import Button from "../UI/Buttons/Button";
+import SpinnerFullPage from "../UI/Spinner/SpinnerFullPage";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useDecks } from "../../contexts/DecksContext";
 
@@ -41,7 +42,7 @@ function reducer(state, action) {
 }
 
 export default function DeckForm() {
-  const { decks, createDeck, updateDeck } = useDecks();
+  const { decks, isLoading, createDeck, updateDeck } = useDecks();
   const { deckId } = useParams();
   const deckToEdit = decks.find((deck) => deck.id === deckId);
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export default function DeckForm() {
   const initialState = {
     title: deckToEdit?.title || "",
     description: deckToEdit?.description || "",
-    fields: deckToEdit?.terms || [getEmptyField()],
+    fields: structuredClone(deckToEdit?.terms) || [getEmptyField()],
   };
 
   const [{ title, description, fields }, dispatch] = useReducer(
@@ -67,7 +68,7 @@ export default function DeckForm() {
       .map((field) => field.description)
       .every((description) => description);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!canSave) return;
@@ -78,8 +79,10 @@ export default function DeckForm() {
       terms: fields,
     };
 
-    deckId ? updateDeck(newDeck, deckId) : createDeck(newDeck);
-    navigate(deckId ? `/app/decks/${deckId}` : "/app/decks");
+    if (!deckToEdit) {
+      const id = await createDeck(newDeck);
+      navigate(`/app/decks/${id}`);
+    } else updateDeck(newDeck, deckId);
   }
 
   useEffect(() => {
@@ -88,10 +91,15 @@ export default function DeckForm() {
     window.scrollTo(0, document.body.scrollHeight);
   }, [fields, prevFields, deckToEdit]);
 
+  if (isLoading) return <SpinnerFullPage />;
+
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form
+      className={`form ${isLoading ? "loading" : ""}`}
+      onSubmit={handleSubmit}
+    >
       <FormHeader title={title} description={description} dispatch={dispatch}>
-        <FormControls deckId={deckId} canSave={canSave} />
+        <FormControls deckToEdit={deckToEdit} canSave={canSave} />
         <FormInfo title={title} description={description} dispatch={dispatch} />
       </FormHeader>
 
@@ -131,24 +139,28 @@ function FormHeader({ children }) {
   return <header className="form__header">{children}</header>;
 }
 
-function FormControls({ deckId, canSave }) {
+function FormControls({ deckToEdit, canSave }) {
   const navigate = useNavigate();
   return (
     <div className="form__controls">
-      {deckId && (
-        <Button round className="form__back-btn" onClick={() => navigate(-1)}>
+      {deckToEdit && (
+        <Button
+          round
+          className="form__back-btn"
+          onClick={() => navigate(`/app/decks/${deckToEdit.id}`)}
+        >
           <BsArrowLeftShort />
         </Button>
       )}
       <h2 className="form__title">
-        {deckId ? "Back to deck" : "Create a flashcard deck"}
+        {deckToEdit ? "Back to deck" : "Create a flashcard deck"}
       </h2>
       <Button
         type="submit"
         className="form__submit-btn form__submit-btn--top"
         disabled={!canSave}
       >
-        {deckId ? "Save" : "Create"}
+        {deckToEdit ? "Save" : "Create"}
       </Button>
     </div>
   );

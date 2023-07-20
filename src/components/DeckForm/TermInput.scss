@@ -78,7 +78,27 @@
     }
   }
 
-  &__description {
+  &__description-loader {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    gap: 1rem;
+    width: 100%;
+    height: 3rem;
+    margin-top: 0.8rem;
+
+    .spinner {
+      height: 2rem;
+      width: 2rem;
+      -webkit-mask: radial-gradient(
+        farthest-side,
+        #0000 calc(100% - 3px),
+        #000 0
+      );
+    }
+  }
+
+  &__description-text {
     // prevent from stretching
     min-width: 0;
 
@@ -132,8 +152,17 @@
     }
 
     &-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
       font-size: 2rem;
       grid-column: 1/-1;
+
+      .spinner {
+        height: 4rem;
+        width: 4rem;
+      }
     }
   }
 

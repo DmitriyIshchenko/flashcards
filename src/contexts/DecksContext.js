@@ -80,6 +80,7 @@ function DecksProvider({ children }) {
       const data = await res.json();
 
       dispatch({ type: "deck/created", payload: data });
+      return data.id;
     } catch (err) {
       dispatch({
         type: "rejected",
