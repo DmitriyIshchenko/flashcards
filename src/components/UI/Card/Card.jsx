@@ -1,22 +1,21 @@
-import "./Card.scss";
+import styles from "./Card.module.css";
 
 export default function Card({
-  className,
+  className = "",
   listItem = false,
   onClick,
   children,
 }) {
+  if (listItem)
+    return (
+      <li className={`${styles.card} ${className}`} onClick={onClick}>
+        {children}
+      </li>
+    );
+
   return (
-    <>
-      {listItem ? (
-        <li className={`card ${className}`} onClick={onClick}>
-          {children}
-        </li>
-      ) : (
-        <article className={`card ${className}`} onClick={onClick}>
-          {children}
-        </article>
-      )}
-    </>
+    <article className={`${styles.card} ${className}`} onClick={onClick}>
+      {children}
+    </article>
   );
 }
