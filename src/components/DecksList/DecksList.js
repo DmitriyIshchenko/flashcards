@@ -1,21 +1,33 @@
-import "./DecksList.scss";
+import { Link } from "react-router-dom";
+import { BsThreeDots, BsPlus } from "react-icons/bs";
+import { PiCardsDuotone } from "react-icons/pi";
+
 import Button from "../UI/Buttons/Button";
 import Card from "../UI/Card/Card";
 import Dropdown from "../UI/Dropdown/Dropdown";
-import { BsThreeDots, BsPlus } from "react-icons/bs";
-import { PiCardsDuotone } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import SpinnerFullPage from "../UI/Spinner/SpinnerFullPage";
+import Message from "../UI/Message/Message";
+
 import { useDecks } from "../../contexts/DecksContext";
 
+import "./DecksList.scss";
 export default function DecksList() {
-  const { decks } = useDecks();
+  const { decks, isLoading, error } = useDecks();
+
+  if (isLoading) return <SpinnerFullPage />;
+  if (error && !decks.length) return <Message isError message={error} />;
+
   return (
     <div className="decks">
-      <ul className="decks-list">
-        {decks.map((deck) => (
-          <DeckCard key={deck.id} deck={deck} />
-        ))}
-      </ul>
+      {decks.length ? (
+        <ul className="decks-list">
+          {decks.map((deck) => (
+            <DeckCard key={deck.id} deck={deck} />
+          ))}
+        </ul>
+      ) : (
+        <Message message="Start learning by creating your first deck of flashcards!" />
+      )}
       <Link to="/app/form" className="decks__add-btn">
         <BsPlus />
       </Link>
