@@ -5,13 +5,15 @@ import Dropdown from "../UI/Dropdown/Dropdown";
 import { BsThreeDots, BsPlus } from "react-icons/bs";
 import { PiCardsDuotone } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import { useDecks } from "../../contexts/DecksContext";
 
-export default function DecksList({ decks, onDeleteDeck }) {
+export default function DecksList() {
+  const { decks } = useDecks();
   return (
     <div className="decks">
       <ul className="decks-list">
         {decks.map((deck) => (
-          <DeckCard key={deck.id} deck={deck} onDeleteDeck={onDeleteDeck} />
+          <DeckCard key={deck.id} deck={deck} />
         ))}
       </ul>
       <Link to="/app/form" className="decks__add-btn">
@@ -21,8 +23,9 @@ export default function DecksList({ decks, onDeleteDeck }) {
   );
 }
 
-function DeckCard({ deck, onDeleteDeck }) {
+function DeckCard({ deck }) {
   const { title, terms, id } = deck;
+  const { deleteDeck } = useDecks();
   return (
     <Card className="deck" listItem>
       <Link to={`${id}`}>
@@ -47,7 +50,7 @@ function DeckCard({ deck, onDeleteDeck }) {
           </Link>,
           <button
             className="dropdown__btn dropdown__btn--delete"
-            onClick={() => onDeleteDeck(id)}
+            onClick={() => deleteDeck(id)}
           >
             Delete
           </button>,
