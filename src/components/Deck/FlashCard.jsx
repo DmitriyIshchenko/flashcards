@@ -1,22 +1,18 @@
 import Card from "../UI/Card/Card";
 
-import "./FlashCard.scss";
+import styles from "./FlashCard.module.css";
 
 export default function FlashCard({ data, isFlipped, onFlip }) {
   const { term, description } = data;
 
   return (
-    <Card className="flashcard" onClick={onFlip}>
-      <h3 className="flashcard__title">{isFlipped ? "Description" : "Term"}</h3>
-      <p
-        className={`flashcard__content flashcard__content--${
-          isFlipped ? "description" : "term"
-        }`}
-      >
+    <Card className={styles.flashcard} onClick={onFlip}>
+      <h3 className={styles.title}>{isFlipped ? "Description" : "Term"}</h3>
+      <p className={isFlipped ? styles.description : styles.term}>
         {isFlipped ? description : term}
       </p>
 
-      <span className="flashcard__hint">Click to flip</span>
+      <span className={styles.hint}>Click to flip</span>
     </Card>
   );
 }
