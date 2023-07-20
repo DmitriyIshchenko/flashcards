@@ -8,7 +8,7 @@ import DeckForm from "./components/DeckForm/DeckForm";
 import DecksList from "./components/DecksList/DecksList";
 import Deck from "./components/Deck/Deck";
 
-import "./index.scss";
+import "./index.css";
 import { DecksProvider } from "./contexts/DecksContext";
 
 export default function App() {
