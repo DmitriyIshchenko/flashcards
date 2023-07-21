@@ -1,9 +1,10 @@
 import Spinner from "./Spinner";
-import "./Spinner.scss";
+
+import styles from "./SpinnerFullPage.module.css";
 
 function SpinnerFullPage() {
   return (
-    <div className="spinner-fullpage">
+    <div className={styles.spinnerFullPage}>
       <Spinner />
     </div>
   );

@@ -1,10 +1,15 @@
-import "./Spinner.scss";
+import styles from "./Spinner.module.css";
 
-function Spinner({ message = "" }) {
+function Spinner({ strokeWidth = "8px", size = "6rem" }) {
   return (
-    <div className="spinner-container">
-      <div className="spinner"></div>
-      {message && <p className="spinner-message">{message}</p>}
+    <div className={styles.spinnerContainer}>
+      <div
+        style={{
+          width: size,
+          WebkitMask: `radial-gradient(farthest-side, #0000 calc(100% - ${strokeWidth}), #000 0)`,
+        }}
+        className={styles.spinner}
+      ></div>
     </div>
   );
 }
