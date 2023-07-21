@@ -1,32 +1,51 @@
 .flashcard {
-  position: relative;
-
   display: grid;
-  place-items: center;
+  grid-template-rows: auto 35rem auto;
+  align-content: center;
+  gap: 2rem;
 
-  height: 40rem;
+  padding: 2.5rem 3rem;
+  padding-bottom: 1.5rem;
   width: var(--item-width);
 }
 
 .title {
-  position: absolute;
-  top: 3rem;
-  left: 3rem;
   font-size: 2rem;
   color: var(--clr-grey);
 }
 
-.term {
-  font-size: 3rem;
-  font-weight: 500;
+.content {
+  display: grid;
+  grid-template-columns: auto 15rem;
+  align-content: center;
+  gap: 2rem;
+}
+
+.content:not(:has(.image)) {
+  grid-template-columns: 1fr;
 }
 
 .description {
-  font-size: 2rem;
-  font-weight: 500;
+  overflow: auto;
+  white-space: pre-wrap;
+
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 1rem;
+  object-fit: cover;
 }
 
 .hint {
-  position: absolute;
-  bottom: 2rem;
+  justify-self: center;
+}
+
+.term {
+  font-size: 3rem;
+  align-self: center;
+  justify-self: center;
 }
