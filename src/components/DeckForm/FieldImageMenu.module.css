@@ -1,0 +1,91 @@
+.image {
+  position: relative;
+  width: 12rem;
+
+  aspect-ratio: 1;
+  border-radius: 1rem;
+  border: 2px solid var(--clr-grey-light);
+
+  cursor: pointer;
+}
+.image:has(img) {
+  border-color: transparent;
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.output {
+  grid-column: 1/-1;
+  grid-row: 3/4;
+
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  place-items: center;
+}
+
+.output img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+
+  border: 0.5rem solid transparent;
+
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.output img:hover {
+  border-color: var(--clr-accent);
+}
+
+.addBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  border: none;
+
+  background-color: transparent;
+  transition: all 0.3s;
+
+  cursor: pointer;
+
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.addBtn:hover,
+.addBtn:active {
+  color: var(--clr-accent-dark);
+}
+.addBtn:disabled {
+  color: var(--clr-grey);
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 2rem;
+  grid-column: 1/-1;
+}
+
+.loader :global(.spinner) {
+  height: 4rem;
+  width: 4rem;
+}
+
+@media screen and (max-width: 100rem) {
+  .output {
+    grid-row: 4/5;
+  }
+}

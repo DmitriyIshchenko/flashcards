@@ -5,6 +5,8 @@ import Button from "../UI/Buttons/Button";
 import Spinner from "../UI/Spinner/Spinner";
 import { IMAGES_API_URL, IMAGES_API_KEY } from "../../helpers/config";
 
+import styles from "./FieldImageMenu.module.css";
+
 export default function FieldImageMenu({ field, dispatch }) {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +55,7 @@ export default function FieldImageMenu({ field, dispatch }) {
 function FieldImage({ field, dispatch, handleFetchImages, isMenuOpen }) {
   const { term, image, id } = field;
   return (
-    <div className="word__image">
+    <div className={styles.image}>
       {image ? (
         <>
           <Button
@@ -78,7 +80,7 @@ function FieldImage({ field, dispatch, handleFetchImages, isMenuOpen }) {
         <button
           onClick={handleFetchImages}
           type="button"
-          className="word__img-add-btn"
+          className={styles.addBtn}
           disabled={isMenuOpen}
         >
           <BiSolidImageAdd size={"4rem"} />
@@ -100,9 +102,9 @@ function FieldImageOutput({
   if (!isMenuOpen) return null;
 
   return (
-    <div className="word__images-output">
+    <div className={styles.output}>
       {isLoading ? (
-        <div className="word__images-output-loader">
+        <div className={styles.loader}>
           <Spinner />
           <span>Loading images...</span>
         </div>

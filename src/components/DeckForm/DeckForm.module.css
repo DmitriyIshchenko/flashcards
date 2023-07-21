@@ -1,0 +1,85 @@
+.form {
+  display: grid;
+  align-items: center;
+
+  width: 80%;
+  margin: 0 auto;
+  margin-block: 4rem;
+}
+
+.form button[type="submit"] {
+  justify-self: center;
+}
+
+.form.loading {
+  opacity: 0.3;
+}
+
+/* disable button during loading */
+.form.loading a,
+.form.loading button {
+  pointer-events: none;
+}
+
+.header {
+  display: grid;
+  gap: 3rem;
+}
+
+.controls > .title {
+  font-size: 2.6rem;
+}
+
+.controls {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.controls button[type="submit"] {
+  margin-left: auto;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.label {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.deckTitle,
+.deckDescription {
+  border: 2px solid var(--clr-black);
+  padding: 1rem 1.5rem;
+  border-radius: 100rem;
+  width: 100%;
+
+  background: transparent;
+  transition: all 0.2s;
+
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+.deckTitle:focus,
+.deckDescription:focus {
+  border-color: var(--clr-accent);
+  outline: none;
+}
+
+.fields {
+  display: grid;
+  gap: 4rem;
+
+  margin-top: 5rem;
+  margin-bottom: 4rem;
+  border: none;
+}
