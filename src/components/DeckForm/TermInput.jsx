@@ -3,9 +3,9 @@ import { TbWorldSearch } from "react-icons/tb";
 import { BsFillTrashFill } from "react-icons/bs";
 
 import FieldImageMenu from "./FieldImageMenu";
-import Button from "../UI/Buttons/Button";
 import Card from "../UI/Card/Card";
-import Spinner from "../UI/Spinner/Spinner";
+import Button from "../UI/Buttons/Button";
+import Loader from "./Loader";
 
 import { WORDS_API_URL, WORDS_API_KEY } from "../../helpers/config";
 import { formatDescription } from "../../helpers/formatDescription";
@@ -141,10 +141,7 @@ function FieldContent({ field, isDescriptionLoading, dispatch }) {
           data-placeholder="Description"
         ></div>
         {isDescriptionLoading && (
-          <div className={styles.loader}>
-            <Spinner />
-            <span>Fetching description...</span>
-          </div>
+          <Loader type="definition" message="Loading definition..." />
         )}
       </div>
     </div>

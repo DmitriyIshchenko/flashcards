@@ -1,4 +1,4 @@
-.image {
+.imageBox {
   position: relative;
   width: 12rem;
 
@@ -8,10 +8,18 @@
 
   cursor: pointer;
 }
-.image:has(img) {
+
+.imageBox:has(img) {
   border-color: transparent;
 }
-.image img {
+
+@supports not selector(:has(*)) {
+  .imageBox {
+    border: none;
+  }
+}
+
+.imageBox img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -84,7 +92,7 @@
   width: 4rem;
 }
 
-@media screen and (max-width: 100rem) {
+@media screen and (max-width: 78em) {
   .output {
     grid-row: 4/5;
   }
