@@ -1,5 +1,5 @@
 :root {
-  --carousel-width: 64rem;
+  --carousel-width: 72rem;
   --item-gap: 3rem;
 
   --item-width: calc(var(--carousel-width) - 2 * var(--item-gap));

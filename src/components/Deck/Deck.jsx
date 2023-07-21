@@ -13,6 +13,9 @@ function Deck() {
   const [isFlipped, setIsFlipped] = useState(false);
 
   function handleFlip() {
+    // don't flip if there is selected text
+    if (document.getSelection().toString()) return;
+
     setIsFlipped((v) => !v);
   }
 
