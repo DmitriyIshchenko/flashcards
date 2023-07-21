@@ -15,7 +15,7 @@ html {
 body {
   box-sizing: border-box;
   font-family: "Bw Modelica SS01", sans-serif;
-  background-color: #f4f4f4;
+  background-color: var(--clr-background);
 }
 
 svg {
@@ -42,4 +42,6 @@ a {
   --clr-grey-dark: #343a40;
   --clr-grey: #868e96;
   --clr-grey-light: #dee2e6;
+
+  --clr-background: #f4f4f4;
 }

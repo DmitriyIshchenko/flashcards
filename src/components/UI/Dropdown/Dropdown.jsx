@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Card from "../Card/Card";
-import "./Dropdown.scss";
+
+import styles from "./Dropdown.module.css";
 
 export default function Dropdown({ className, renderTrigger, menu }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,11 +28,9 @@ export default function Dropdown({ className, renderTrigger, menu }) {
       {renderTrigger(handleOpen)}
 
       {isOpen && (
-        <Card className="dropdown__menu">
+        <Card className={styles.menu}>
           {menu.map((item, index) => (
-            <li key={index} className="dropdown__item">
-              {item}
-            </li>
+            <li key={index}>{item}</li>
           ))}
         </Card>
       )}

@@ -3,14 +3,14 @@ import { TbWorldSearch } from "react-icons/tb";
 import { BsFillTrashFill } from "react-icons/bs";
 
 import FieldImageMenu from "./FieldImageMenu";
-import Button from "../UI/Buttons/Button";
 import Card from "../UI/Card/Card";
-import Spinner from "../UI/Spinner/Spinner";
+import Button from "../UI/Buttons/Button";
+import Loader from "./Loader";
 
 import { WORDS_API_URL, WORDS_API_KEY } from "../../helpers/config";
 import { formatDescription } from "../../helpers/formatDescription";
 
-import "./TermInput.scss";
+import styles from "./TermInput.module.css";
 
 export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
   const { term, id } = field;
@@ -42,7 +42,7 @@ export default function TermInput({ field, fieldIndex, isOnlyItem, dispatch }) {
   }
 
   return (
-    <Card className="word" listItem>
+    <Card className={styles.field} listItem>
       <FieldHeader
         field={field}
         fieldIndex={fieldIndex}
@@ -70,21 +70,19 @@ function FieldHeader({
   dispatch,
 }) {
   return (
-    <header className="word__header">
-      <span className="word__number">{fieldIndex + 1}</span>
+    <header className={styles.header}>
+      <span className={styles.number}>{fieldIndex + 1}</span>
       <Button
-        round
         type="button"
+        category="search"
         title="Get description from Merriam-Webster"
-        className="word__search-btn"
         onClick={handleFetchWord}
       >
         <TbWorldSearch />
       </Button>
       <Button
-        round
         type="button"
-        className="word__delete-btn"
+        category="delete"
         onClick={() => dispatch({ type: "fields/delete", payload: field.id })}
         disabled={isOnlyItem}
       >
@@ -104,9 +102,9 @@ function FieldContent({ field, isDescriptionLoading, dispatch }) {
   }, [description, descriptionRef]);
 
   return (
-    <div className="word__content">
+    <div className={styles.content}>
       <input
-        className="word__term"
+        className={styles.term}
         name="term"
         type="text"
         placeholder="Term"
@@ -124,9 +122,9 @@ function FieldContent({ field, isDescriptionLoading, dispatch }) {
         required
       />
 
-      <div className="word__description">
+      <div>
         <div
-          className="word__description-text"
+          className={styles.description}
           contentEditable="true"
           onInput={(e) =>
             dispatch({
@@ -143,10 +141,7 @@ function FieldContent({ field, isDescriptionLoading, dispatch }) {
           data-placeholder="Description"
         ></div>
         {isDescriptionLoading && (
-          <div className="word__description-loader">
-            <Spinner />
-            <span>Fetching description...</span>
-          </div>
+          <Loader type="definition" message="Loading definition..." />
         )}
       </div>
     </div>

@@ -1,0 +1,17 @@
+.loader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  padding-block: 1rem;
+}
+
+.loader.image {
+  display: grid;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.loader.definition {
+  font-size: 1.4rem;
+}

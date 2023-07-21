@@ -1,0 +1,48 @@
+.list {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, 35rem);
+  gap: 3rem;
+
+  /* temp */
+  margin: 3rem;
+}
+
+.deck {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2.5rem;
+
+  padding: 2rem;
+}
+
+.title {
+  display: flex;
+  gap: 1rem;
+
+  font-size: 1.8rem;
+}
+
+.title svg {
+  color: var(--clr-tag-text);
+}
+.title span {
+  flex: 1;
+}
+
+.tag {
+  align-self: start;
+
+  padding: 0.3rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--clr-tag);
+
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--clr-tag-text);
+}
+
+.dropdown {
+  align-self: end;
+}

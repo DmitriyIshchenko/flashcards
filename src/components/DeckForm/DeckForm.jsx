@@ -8,7 +8,7 @@ import SpinnerFullPage from "../UI/Spinner/SpinnerFullPage";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useDecks } from "../../contexts/DecksContext";
 
-import "./DeckForm.scss";
+import styles from "./DeckForm.module.css";
 
 function getEmptyField() {
   return { term: "", description: "", image: null, id: crypto.randomUUID() };
@@ -96,7 +96,7 @@ export default function DeckForm() {
 
   return (
     <form
-      className={`form ${isLoading ? "loading" : ""}`}
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
       onSubmit={handleSubmit}
     >
       <FormHeader title={title} description={description} dispatch={dispatch}>
@@ -125,9 +125,8 @@ export default function DeckForm() {
       </Button>
 
       <Button
-        round
-        className="form__add-btn"
         type="button"
+        category="add"
         onClick={() => dispatch({ type: "fields/add" })}
       >
         <BsPlus />
@@ -137,30 +136,26 @@ export default function DeckForm() {
 }
 
 function FormHeader({ children }) {
-  return <header className="form__header">{children}</header>;
+  return <header className={styles.header}>{children}</header>;
 }
 
 function FormControls({ deckToEdit, canSave }) {
   const navigate = useNavigate();
   return (
-    <div className="form__controls">
+    <div className={styles.controls}>
       {deckToEdit && (
         <Button
-          round
-          className="form__back-btn"
+          type="button"
+          category="back"
           onClick={() => navigate(`/app/decks/${deckToEdit.id}`)}
         >
           <BsArrowLeftShort />
         </Button>
       )}
-      <h2 className="form__title">
+      <h2 className={styles.title}>
         {deckToEdit ? "Back to deck" : "Create a flashcard deck"}
       </h2>
-      <Button
-        type="submit"
-        className="form__submit-btn form__submit-btn--top"
-        disabled={!canSave}
-      >
+      <Button type="submit" disabled={!canSave}>
         {deckToEdit ? "Save" : "Create"}
       </Button>
     </div>
@@ -169,13 +164,13 @@ function FormControls({ deckToEdit, canSave }) {
 
 function FormInfo({ title, description, dispatch }) {
   return (
-    <div className="form__info">
-      <label htmlFor="title" className="form__label">
+    <div className={styles.info}>
+      <label htmlFor="title" className={styles.label}>
         Title
         <input
           type="text"
           id="title"
-          className="form__input"
+          className={styles.deckTitle}
           placeholder="Enter a title"
           value={title}
           onChange={(e) =>
@@ -185,12 +180,12 @@ function FormInfo({ title, description, dispatch }) {
         />
       </label>
 
-      <label htmlFor="description" className="form__label">
+      <label htmlFor="description" className={styles.label}>
         Description
         <input
           type="text"
           id="description"
-          className="form__input"
+          className={styles.deckDescription}
           placeholder="Complete a description"
           value={description}
           onChange={(e) =>
@@ -204,5 +199,5 @@ function FormInfo({ title, description, dispatch }) {
 }
 
 function FormFields({ children }) {
-  return <ol className="form__set">{children}</ol>;
+  return <ol className={styles.fields}>{children}</ol>;
 }

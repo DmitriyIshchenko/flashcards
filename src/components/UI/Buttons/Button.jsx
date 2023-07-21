@@ -1,17 +1,17 @@
-import "./Button.scss";
+import styles from "./Button.module.css";
 
 export default function Button({
   type = "button",
+  category = "",
   className = "",
   onClick,
-  round,
   children,
   ...rest
 }) {
   return (
     <button
       type={type}
-      className={`btn ${round ? `btn--round` : ""} ${className}`}
+      className={`${styles.btn} ${styles[category] || ""} ${className}`}
       onClick={onClick}
       {...rest}
     >
