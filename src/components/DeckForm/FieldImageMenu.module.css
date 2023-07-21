@@ -87,10 +87,6 @@
   grid-column: 1/-1;
 }
 
-.loader :global(.spinner) {
-  height: 4rem;
-  width: 4rem;
-}
 
 @media screen and (max-width: 78em) {
   .output {

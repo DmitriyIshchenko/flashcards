@@ -78,11 +78,6 @@
   display: block; /* For Firefox */
 }
 
-.descriptionLoader :global(.spinner) {
-  height: 2rem;
-  width: 2rem;
-  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 0);
-}
 
 @media screen and (max-width: 78em) {
   .content {
