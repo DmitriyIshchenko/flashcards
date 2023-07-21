@@ -11,7 +11,7 @@ import Message from "../UI/Message/Message";
 
 import { useDecks } from "../../contexts/DecksContext";
 
-import "./DecksList.scss";
+import styles from "./DecksList.module.css";
 import dropdown from "../UI/Dropdown/Dropdown.module.css";
 
 export default function DecksList() {
@@ -21,9 +21,9 @@ export default function DecksList() {
   if (error && !decks.length) return <Message isError message={error} />;
 
   return (
-    <div className="decks">
+    <div>
       {decks.length ? (
-        <ul className="decks-list">
+        <ul className={styles.list}>
           {decks.map((deck) => (
             <DeckCard key={deck.id} deck={deck} />
           ))}
@@ -42,18 +42,18 @@ function DeckCard({ deck }) {
   const { title, terms, id } = deck;
   const { deleteDeck } = useDecks();
   return (
-    <Card className="deck" listItem>
+    <Card className={styles.deck} listItem>
       <Link to={`${id}`}>
-        <h3 className="deck__title">
+        <h3 className={styles.title}>
           <PiCardsDuotone size={"2.5rem"} /> <span>{title}</span>
         </h3>
       </Link>
-      <span className="deck__tag">
+      <span className={styles.tag}>
         {terms.length} term{terms.length === 1 ? "" : "s"}
       </span>
 
       <Dropdown
-        className="deck__dropdown"
+        className={styles.dropdown}
         renderTrigger={(onClick) => (
           <Button type="button" category="menu" onClick={onClick}>
             <BsThreeDots />
