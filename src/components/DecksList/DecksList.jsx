@@ -3,6 +3,7 @@ import { BsThreeDots, BsPlus } from "react-icons/bs";
 import { PiCardsDuotone } from "react-icons/pi";
 
 import Button from "../UI/Buttons/Button";
+import LinkButton from "../UI/Buttons/LinkButton";
 import Card from "../UI/Card/Card";
 import Dropdown from "../UI/Dropdown/Dropdown";
 import SpinnerFullPage from "../UI/Spinner/SpinnerFullPage";
@@ -11,7 +12,8 @@ import Message from "../UI/Message/Message";
 import { useDecks } from "../../contexts/DecksContext";
 
 import "./DecksList.scss";
-import LinkButton from "../UI/Buttons/LinkButton";
+import dropdown from "../UI/Dropdown/Dropdown.module.css";
+
 export default function DecksList() {
   const { decks, isLoading, error } = useDecks();
 
@@ -60,13 +62,13 @@ function DeckCard({ deck }) {
         menu={[
           <Link
             to={`/app/form/${id}`}
-            className="dropdown__btn"
+            className={dropdown.option}
             key="edit-link"
           >
             Edit
           </Link>,
           <button
-            className="dropdown__btn dropdown__btn--delete"
+            className={`${dropdown.option} ${dropdown.delete}`}
             onClick={() => deleteDeck(id)}
             key="delete-btn"
           >
