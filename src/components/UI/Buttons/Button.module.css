@@ -24,6 +24,11 @@
   background-color: var(--clr-grey-dark);
 }
 
+.btn:disabled {
+  background-color: var(--clr-grey);
+  cursor: not-allowed;
+}
+
 .round,
 .round:link,
 .round:visited {
@@ -98,6 +103,7 @@
 }
 .delete:disabled {
   background-color: var(--clr-grey);
+  cursor: not-allowed;
 }
 
 .delete-image {
