@@ -1,5 +1,3 @@
-import "./Message.scss";
-
 import styles from "./Message.module.css";
 
 function Message({ message, isError }) {
