@@ -1,8 +1,9 @@
-import "./Carousel.scss";
 import { useRef, useState } from "react";
 import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 import { CSSTransition } from "react-transition-group";
 import Button from "../Buttons/Button";
+
+import styles from "./Carousel.module.css";
 
 export default function Carousel({ children }) {
   const [inProp, setInProp] = useState(true);
@@ -35,8 +36,8 @@ export default function Carousel({ children }) {
   }
 
   return (
-    <div className="carousel">
-      <div className="carousel__inner">
+    <div className={styles.carousel}>
+      <div className={styles.inner}>
         <CSSTransition
           nodeRef={nodeRef}
           in={inProp}
@@ -45,28 +46,24 @@ export default function Carousel({ children }) {
           onEntered={handleUpdateIndex}
           onExited={handleUpdateIndex}
         >
-          <div className="carousel__content" ref={nodeRef}>
-            <div className="carousel__item carousel__item--left">
-              {children.at(currentIndex - 1)}
-            </div>
-            <div className="carousel__item carousel__item--center">
-              {children.at(currentIndex)}
-            </div>
-            <div className="carousel__item carousel__item--right">
+          <div className={styles.content} ref={nodeRef}>
+            <div className={styles.item}>{children.at(currentIndex - 1)}</div>
+            <div className={styles.item}>{children.at(currentIndex)}</div>
+            <div className={styles.item}>
               {children.at(currentIndex + 1) || children.at(0)}
             </div>
           </div>
         </CSSTransition>
       </div>
 
-      <span className="carousel__info">
+      <span className={styles.info}>
         {currentIndex + 1} / {children.length}
       </span>
 
       <Button
         type="button"
         category="move"
-        className="carousel__btn carousel__btn--left"
+        className={styles.btnLeft}
         data-direction="left"
         disabled={isControlsDisabled}
         onClick={handleMove}
@@ -76,7 +73,7 @@ export default function Carousel({ children }) {
       <Button
         type="button"
         category="move"
-        className="carousel__btn carousel__btn--right"
+        className={styles.btnRight}
         data-direction="right"
         disabled={isControlsDisabled}
         onClick={handleMove}
