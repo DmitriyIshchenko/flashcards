@@ -11,6 +11,7 @@ import Message from "../UI/Message/Message";
 import { useDecks } from "../../contexts/DecksContext";
 
 import "./DecksList.scss";
+import LinkButton from "../UI/Buttons/LinkButton";
 export default function DecksList() {
   const { decks, isLoading, error } = useDecks();
 
@@ -28,9 +29,9 @@ export default function DecksList() {
       ) : (
         <Message message="Start learning by creating your first deck of flashcards!" />
       )}
-      <Link to="/app/form" className="decks__add-btn">
+      <LinkButton to="/app/form" className="decks__add-btn" category="add">
         <BsPlus />
-      </Link>
+      </LinkButton>
     </div>
   );
 }
@@ -52,7 +53,7 @@ function DeckCard({ deck }) {
       <Dropdown
         className="deck__dropdown"
         renderTrigger={(onClick) => (
-          <Button round className="dropdown__trigger" onClick={onClick}>
+          <Button type="button" category="menu" onClick={onClick}>
             <BsThreeDots />
           </Button>
         )}

@@ -2,6 +2,7 @@ import "./Carousel.scss";
 import { useRef, useState } from "react";
 import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 import { CSSTransition } from "react-transition-group";
+import Button from "../Buttons/Button";
 
 export default function Carousel({ children }) {
   const [inProp, setInProp] = useState(true);
@@ -62,22 +63,26 @@ export default function Carousel({ children }) {
         {currentIndex + 1} / {children.length}
       </span>
 
-      <button
+      <Button
+        type="button"
+        category="move"
         className="carousel__btn carousel__btn--left"
         data-direction="left"
         disabled={isControlsDisabled}
         onClick={handleMove}
       >
         <BsArrowLeftShort />
-      </button>
-      <button
+      </Button>
+      <Button
+        type="button"
+        category="move"
         className="carousel__btn carousel__btn--right"
         data-direction="right"
         disabled={isControlsDisabled}
         onClick={handleMove}
       >
         <BsArrowRightShort />
-      </button>
+      </Button>
     </div>
   );
 }

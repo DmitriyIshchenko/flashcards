@@ -73,18 +73,16 @@ function FieldHeader({
     <header className="word__header">
       <span className="word__number">{fieldIndex + 1}</span>
       <Button
-        round
         type="button"
+        category="search"
         title="Get description from Merriam-Webster"
-        className="word__search-btn"
         onClick={handleFetchWord}
       >
         <TbWorldSearch />
       </Button>
       <Button
-        round
         type="button"
-        className="word__delete-btn"
+        category="delete"
         onClick={() => dispatch({ type: "fields/delete", payload: field.id })}
         disabled={isOnlyItem}
       >

@@ -24,26 +24,6 @@
     margin-right: auto;
   }
 
-  &__delete-btn {
-    background-color: var(--clr-red);
-    width: 4rem;
-    font-size: 2rem;
-
-    &:hover,
-    &:active {
-      background-color: var(--clr-red-light);
-    }
-
-    &:disabled {
-      background-color: var(--clr-grey);
-    }
-  }
-
-  &__search-btn {
-    width: 4rem;
-    font-size: 2rem;
-  }
-
   &__content {
     grid-column: 1/3;
     grid-row: 2/3;

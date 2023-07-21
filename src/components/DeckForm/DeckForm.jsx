@@ -125,9 +125,8 @@ export default function DeckForm() {
       </Button>
 
       <Button
-        round
-        className="form__add-btn"
         type="button"
+        category="add"
         onClick={() => dispatch({ type: "fields/add" })}
       >
         <BsPlus />
@@ -146,8 +145,8 @@ function FormControls({ deckToEdit, canSave }) {
     <div className="form__controls">
       {deckToEdit && (
         <Button
-          round
-          className="form__back-btn"
+          type="button"
+          category="back"
           onClick={() => navigate(`/app/decks/${deckToEdit.id}`)}
         >
           <BsArrowLeftShort />

@@ -57,9 +57,8 @@ function FieldImage({ field, dispatch, handleFetchImages, isMenuOpen }) {
       {image ? (
         <>
           <Button
-            round
             type="button"
-            className="word__img-delete-btn"
+            category="delete-image"
             onClick={() =>
               dispatch({
                 type: "fields/update",

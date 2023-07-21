@@ -2,19 +2,6 @@
   position: relative;
   margin-left: 300px;
 
-  .btn.dropdown__trigger {
-    background-color: transparent;
-    color: var(--clr-black);
-
-    width: 3.5rem;
-    font-size: 1.6rem;
-
-    &:hover,
-    &:active {
-      background-color: var(--clr-grey-light);
-    }
-  }
-
   &__menu {
     position: absolute;
     margin-top: 1rem;
