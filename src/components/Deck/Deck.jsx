@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../../pages/PageNotFound";
 import Carousel from "../UI/Carousel/Carousel";
 import FlashCard from "./FlashCard";
+import SpinnerFullPage from "../UI/Spinner/SpinnerFullPage";
 
 import { useDecks } from "../../contexts/DecksContext";
 
 function Deck() {
-  const { decks } = useDecks();
+  const { currentDeck, isLoading, getDeck } = useDecks();
   const { deckId } = useParams();
+
+  useEffect(() => {
+    getDeck(deckId);
+  }, [deckId]);
 
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -19,11 +24,11 @@ function Deck() {
     setIsFlipped((v) => !v);
   }
 
-  const deck = decks.find((deck) => deck.id === deckId);
-  if (!deck) return <PageNotFound />;
+  if (isLoading) return <SpinnerFullPage />;
+  if (!currentDeck) return <PageNotFound />;
   return (
     <Carousel>
-      {deck.terms.map((term) => (
+      {currentDeck.terms.map((term) => (
         <FlashCard
           key={term.term}
           data={term}

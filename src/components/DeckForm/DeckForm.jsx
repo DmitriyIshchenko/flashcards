@@ -5,6 +5,7 @@ import { BsArrowLeftShort, BsPlus } from "react-icons/bs";
 import TermInput from "./TermInput";
 import Button from "../UI/Buttons/Button";
 import SpinnerFullPage from "../UI/Spinner/SpinnerFullPage";
+import PageNotFound from "../../pages/PageNotFound";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useDecks } from "../../contexts/DecksContext";
 
@@ -37,22 +38,26 @@ function reducer(state, action) {
 
       return { ...state, fields: updatedFields };
     }
+    case "deck/loaded": {
+      const { title, description, terms } = action.payload;
+      return { ...state, title, description, fields: terms };
+    }
     default:
       throw new Error("Unknown action type");
   }
 }
 
-export default function DeckForm() {
-  const { decks, isLoading, createDeck, updateDeck } = useDecks();
-  const { deckId } = useParams();
-  const deckToEdit = decks.find((deck) => deck.id === deckId);
-  const navigate = useNavigate();
+const initialState = {
+  title: "",
+  description: "",
+  fields: [getEmptyField()],
+};
 
-  const initialState = {
-    title: deckToEdit?.title || "",
-    description: deckToEdit?.description || "",
-    fields: structuredClone(deckToEdit?.terms) || [getEmptyField()],
-  };
+export default function DeckForm() {
+  const { deckId } = useParams();
+  const { currentDeck, isLoading, error, createDeck, updateDeck, getDeck } =
+    useDecks();
+  const navigate = useNavigate();
 
   const [{ title, description, fields }, dispatch] = useReducer(
     reducer,
@@ -80,30 +85,35 @@ export default function DeckForm() {
       terms: fields,
     };
 
-    if (!deckToEdit) {
+    if (!currentDeck) {
       const id = await createDeck(newDeck);
       navigate(`/app/decks/${id}`);
     } else updateDeck(newDeck, deckId);
   }
 
   useEffect(() => {
-    if (fields.length <= prevFields?.length || deckToEdit) return;
+    if (!deckId) return;
+    if (currentDeck)
+      return dispatch({ type: "deck/loaded", payload: currentDeck });
+
+    getDeck(deckId);
+  }, [deckId, currentDeck]);
+
+  useEffect(() => {
+    if (fields.length <= prevFields?.length || currentDeck) return;
 
     window.scrollTo(0, document.body.scrollHeight);
-  }, [fields, prevFields, deckToEdit]);
+  }, [fields, prevFields, currentDeck]);
 
+  if (error) return <PageNotFound />;
   if (isLoading) return <SpinnerFullPage />;
 
   return (
-    <form
-      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
-      onSubmit={handleSubmit}
-    >
+    <form className={styles.form} onSubmit={handleSubmit}>
       <FormHeader title={title} description={description} dispatch={dispatch}>
-        <FormControls deckToEdit={deckToEdit} canSave={canSave} />
+        <FormControls deckId={deckId} canSave={canSave} />
         <FormInfo title={title} description={description} dispatch={dispatch} />
       </FormHeader>
-
       <FormFields>
         {fields.map((field, index) => (
           <TermInput
@@ -115,15 +125,13 @@ export default function DeckForm() {
           />
         ))}
       </FormFields>
-
       <Button
         type="submit"
         className="form__submit-btn form__submit-btn--bottom"
         disabled={!canSave}
       >
-        {deckToEdit ? "Save" : "Create"}
+        {deckId ? "Save" : "Create"}
       </Button>
-
       <Button
         type="button"
         category="add"
@@ -139,24 +147,24 @@ function FormHeader({ children }) {
   return <header className={styles.header}>{children}</header>;
 }
 
-function FormControls({ deckToEdit, canSave }) {
+function FormControls({ deckId, canSave }) {
   const navigate = useNavigate();
   return (
     <div className={styles.controls}>
-      {deckToEdit && (
+      {deckId && (
         <Button
           type="button"
           category="back"
-          onClick={() => navigate(`/app/decks/${deckToEdit.id}`)}
+          onClick={() => navigate(`/app/decks/${deckId}`)}
         >
           <BsArrowLeftShort />
         </Button>
       )}
       <h2 className={styles.title}>
-        {deckToEdit ? "Back to deck" : "Create a flashcard deck"}
+        {deckId ? "Back to deck" : "Create a flashcard deck"}
       </h2>
       <Button type="submit" disabled={!canSave}>
-        {deckToEdit ? "Save" : "Create"}
+        {deckId ? "Save" : "Create"}
       </Button>
     </div>
   );
