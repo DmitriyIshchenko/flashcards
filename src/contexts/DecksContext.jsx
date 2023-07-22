@@ -8,6 +8,7 @@ const initialState = {
   decks: [],
   isLoading: false,
   error: "",
+  currentDeck: null,
 };
 
 function reducer(state, action) {
@@ -16,6 +17,8 @@ function reducer(state, action) {
       return { ...state, isLoading: true };
     case "decks/loaded":
       return { ...state, isLoading: false, decks: action.payload };
+    case "deck/loaded":
+      return { ...state, isLoading: false, currentDeck: action.payload };
     case "deck/created":
       return {
         ...state,
@@ -45,7 +48,7 @@ function reducer(state, action) {
 }
 
 function DecksProvider({ children }) {
-  const [{ decks, isLoading, error }, dispatch] = useReducer(
+  const [{ decks, isLoading, error, currentDeck }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -128,6 +131,25 @@ function DecksProvider({ children }) {
       });
     }
   }
+
+  async function getDeck(id) {
+    if (id == currentDeck?.id) return;
+
+    dispatch({ type: "loading" });
+    try {
+      const res = await fetch(`${DECKS_API_URL}/decks/${id}`);
+      const data = await res.json();
+
+      if (!Object.keys(data).length) {
+        dispatch({ type: "rejected", payload: "Deck not found" });
+      } else dispatch({ type: "deck/loaded", payload: data });
+    } catch (err) {
+      dispatch({
+        type: "rejected",
+        payload: "There was an error loading the deck data.",
+      });
+    }
+  }
   return (
     <DecksContext.Provider
       value={{
@@ -137,6 +159,8 @@ function DecksProvider({ children }) {
         createDeck,
         deleteDeck,
         updateDeck,
+        getDeck,
+        currentDeck,
       }}
     >
       {children}
