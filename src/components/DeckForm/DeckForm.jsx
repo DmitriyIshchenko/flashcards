@@ -63,10 +63,8 @@ export default function DeckForm() {
     reducer,
     initialState
   );
-
   const prevFields = usePrevious(fields);
-
-  // no empty descriptions
+  // no empty descriptions allowed
   const canSave =
     title &&
     description &&
@@ -85,7 +83,7 @@ export default function DeckForm() {
       terms: fields,
     };
 
-    if (!currentDeck) {
+    if (!deckId) {
       const id = await createDeck(newDeck);
       navigate(`/app/decks/${id}`);
     } else updateDeck(newDeck, deckId);
@@ -99,11 +97,14 @@ export default function DeckForm() {
     getDeck(deckId);
   }, [deckId, currentDeck]);
 
+  // scroll to added field
   useEffect(() => {
-    if (fields.length <= prevFields?.length || currentDeck) return;
+    if (!prevFields) return; // initial render case
+    if (prevFields.length === 1 && deckId) return; // new deck form case
+    if (fields.length <= prevFields.length) return; // delete field case
 
     window.scrollTo(0, document.body.scrollHeight);
-  }, [fields, prevFields, currentDeck]);
+  }, [fields, prevFields, deckId]);
 
   if (error) return <PageNotFound />;
   if (isLoading) return <SpinnerFullPage />;
