@@ -83,7 +83,7 @@ export default function DeckForm() {
       terms: fields,
     };
 
-    if (!currentDeck) {
+    if (!deckId) {
       const id = await createDeck(newDeck);
       navigate(`/app/decks/${id}`);
     } else updateDeck(newDeck, deckId);
